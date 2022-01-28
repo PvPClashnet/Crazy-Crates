@@ -25,7 +25,6 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
-
 import java.util.Random;
 
 /**
@@ -34,9 +33,8 @@ import java.util.Random;
  * Display items are controlled from the quick crate due to them using nbt tags.
  */
 public class QuadCrate implements Listener {
-    
-    private CrazyManager cc = CrazyManager.getInstance();
-    private NMSSupport nms = cc.getNMSSupport();
+
+    private final NMSSupport nms = CrazyManager.getInstance().getNMSSupport();
     
     @EventHandler
     public void onBlockBreak(BlockBreakEvent e) {
@@ -58,7 +56,7 @@ public class QuadCrate implements Listener {
                         nms.openChest(block, true);
                         Crate crate = session.getCrate();
                         Prize prize = crate.pickPrize(player, block.getLocation().add(.5, 1.3, .5));
-                        cc.givePrize(player, prize);
+                        CrazyManager.getInstance().givePrize(player, prize);
                         ItemBuilder itemBuilder = ItemBuilder.convertItemStack(prize.getDisplayItem());
                         itemBuilder.addLore(new Random().nextInt(Integer.MAX_VALUE) + "");//Makes sure items don't merge
                         ItemStack item = itemBuilder.build();

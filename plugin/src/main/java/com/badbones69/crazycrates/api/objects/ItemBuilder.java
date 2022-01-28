@@ -17,23 +17,19 @@ import org.bukkit.inventory.meta.*;
 import org.bukkit.potion.PotionData;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.potion.PotionType;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
-
 import static com.badbones69.crazycrates.func.ConstantsKt.color;
 
 /**
- *
  * The ItemBuilder is designed to make creating items easier by creating an easy to use Builder.
  * This will allow you to covert an existing ItemStack into an ItemBuilder to allow you to edit
  * an existing ItemStack or make a new ItemStack from scratch.
  *
  * @author BadBones69
- *
  */
 public class ItemBuilder {
 
@@ -41,7 +37,7 @@ public class ItemBuilder {
     private Material material;
     private int damage;
     private String name;
-    private List<String> lore;
+    private final List<String> lore;
     private int amount;
     private String crateName;
     private String player;
@@ -53,7 +49,7 @@ public class ItemBuilder {
     private boolean hideItemFlags;
     private boolean glowing;
     private ItemStack referenceItem;
-    private boolean isMobEgg;
+    private final boolean isMobEgg;
     private EntityType entityType;
     private PotionType potionType;
     private Color potionColor;
@@ -218,8 +214,7 @@ public class ItemBuilder {
                                     break;
                                 }
                             }
-                        } catch (Exception ignored) {
-                        }
+                        } catch (Exception ignored) {}
                         break;
                 }
             }
@@ -264,6 +259,7 @@ public class ItemBuilder {
      */
     public ItemBuilder setMaterial(String material) {
         String metaData = "";
+
         if (material.contains(":")) {// Sets the durability or another value option.
             String[] b = material.split(":");
             material = b[0];
@@ -291,30 +287,19 @@ public class ItemBuilder {
                 this.customModelData = Integer.parseInt(b[1]);
             }
         }
+
         Material m = Material.matchMaterial(material);
+
         if (m != null) this.material = m;
+
         switch (this.material.name()) {
-            case "PLAYER_HEAD":
-            case "SKULL_ITEM":
-                this.isHead = true;
-                break;
-            case "POTION":
-            case "SPLASH_POTION":
-                this.isPotion = true;
-                break;
-            case "LEATHER_HELMET":
-            case "LEATHER_CHESTPLATE":
-            case "LEATHER_LEGGINGS":
-            case "LEATHER_BOOTS":
-                this.isLeatherArmor = true;
-                break;
-            case "BANNER":
-                this.isBanner = true;
-                break;
-            case "SHIELD":
-                this.isShield = true;
-                break;
+            case "PLAYER_HEAD", "SKULL_ITEM" -> this.isHead = true;
+            case "POTION", "SPLASH_POTION" -> this.isPotion = true;
+            case "LEATHER_HELMET", "LEATHER_CHESTPLATE", "LEATHER_LEGGINGS", "LEATHER_BOOTS" -> this.isLeatherArmor = true;
+            case "BANNER" -> this.isBanner = true;
+            case "SHIELD" -> this.isShield = true;
         }
+
         //1.13+ added different banner names and so this is quicker than listing every banner color.
 
         if (this.material.name().contains("BANNER")) this.isBanner = true;
@@ -352,9 +337,7 @@ public class ItemBuilder {
      * @return The ItemBuilder with updated info.
      */
     public ItemBuilder setName(String name) {
-        if (name != null) {
-            this.name = color(name);
-        }
+        if (name != null) this.name = color(name);
         return this;
     }
 
@@ -430,9 +413,7 @@ public class ItemBuilder {
      * @return The ItemBuilder with updated info.
      */
     public ItemBuilder addLore(String lore) {
-        if (lore != null) {
-            this.lore.add(color(lore));
-        }
+        if (lore != null) this.lore.add(color(lore));
         return this;
     }
 
@@ -473,12 +454,14 @@ public class ItemBuilder {
      */
     public List<String> getUpdatedLore() {
         List<String> newLore = new ArrayList<>();
+
         for (String i : lore) {
             for (String placeholder : lorePlaceholders.keySet()) {
                 i = i.replace(placeholder, lorePlaceholders.get(placeholder)).replace(placeholder.toLowerCase(), lorePlaceholders.get(placeholder));
             }
             newLore.add(i);
         }
+
         return newLore;
     }
 
@@ -556,16 +539,16 @@ public class ItemBuilder {
         try {
             String[] split = stringPattern.split(":");
             for (PatternType pattern : PatternType.values()) {
+
                 if (split[0].equalsIgnoreCase(pattern.name()) || split[0].equalsIgnoreCase(pattern.getIdentifier())) {
                     DyeColor color = getDyeColor(split[1]);
-                    if (color != null) {
-                        addPattern(new Pattern(color, pattern));
-                    }
+
+                    if (color != null) addPattern(new Pattern(color, pattern));
                     break;
                 }
+
             }
-        } catch (Exception e) {
-        }
+        } catch (Exception ignored) {}
         return this;
     }
 
@@ -688,9 +671,7 @@ public class ItemBuilder {
      * @return The ItemBuilder with updated info.
      */
     public ItemBuilder setEnchantments(HashMap<Enchantment, Integer> enchantments) {
-        if (enchantments != null) {
-            this.enchantments = enchantments;
-        }
+        if (enchantments != null) this.enchantments = enchantments;
         return this;
     }
 
@@ -781,8 +762,7 @@ public class ItemBuilder {
     public ItemBuilder addItemFlag(String flagString) {
         try {
             addItemFlag(ItemFlag.valueOf(flagString.toUpperCase()));
-        } catch (Exception e) {
-        }
+        } catch (Exception ignored) {}
         return this;
     }
 
@@ -790,19 +770,14 @@ public class ItemBuilder {
         for (String flagString : flagStrings) {
             try {
                 ItemFlag itemFlag = ItemFlag.valueOf(flagString.toUpperCase());
-                if (itemFlag != null) {
-                    addItemFlag(itemFlag);
-                }
-            } catch (Exception e) {
-            }
+                if (itemFlag != null) addItemFlag(itemFlag);
+            } catch (Exception ignored) {}
         }
         return this;
     }
 
     public ItemBuilder addItemFlag(ItemFlag itemFlag) {
-        if (itemFlag != null) {
-            itemFlags.add(itemFlag);
-        }
+        if (itemFlag != null) itemFlags.add(itemFlag);
         return this;
     }
 
@@ -816,10 +791,10 @@ public class ItemBuilder {
      * @return The result of all the info that was given to the builder as an ItemStack.
      */
     public ItemStack build() {
-        if (nbtItem != null) {
-            referenceItem = nbtItem.getItem();
-        }
+        if (nbtItem != null) referenceItem = nbtItem.getItem();
+
         ItemStack item = referenceItem != null ? referenceItem : new ItemStack(material);
+
         if (item.getType() != Material.AIR) {
             if (isHead) {//Has to go 1st due to it removing all data when finished.
                 if (isHash) {//Sauce: https://github.com/deanveloper/SkullCreator
@@ -830,28 +805,30 @@ public class ItemBuilder {
                     }
                 }
             }
+
             item.setAmount(amount);
             ItemMeta itemMeta = item.getItemMeta();
             itemMeta.setDisplayName(getUpdatedName());
             itemMeta.setLore(getUpdatedLore());
+
             if (itemMeta instanceof org.bukkit.inventory.meta.Damageable) ((org.bukkit.inventory.meta.Damageable) itemMeta).setDamage(damage);
+
             if (isPotion && (potionType != null || potionColor != null)) {
                 PotionMeta potionMeta = (PotionMeta) itemMeta;
-                if (potionType != null) {
-                    potionMeta.setBasePotionData(new PotionData(potionType));
-                }
-                if (potionColor != null) {
-                    potionMeta.setColor(potionColor);
-                }
+                if (potionType != null) potionMeta.setBasePotionData(new PotionData(potionType));
+                if (potionColor != null) potionMeta.setColor(potionColor);
             }
+
             if (isLeatherArmor && armorColor != null) {
                 LeatherArmorMeta leatherMeta = (LeatherArmorMeta) itemMeta;
                 leatherMeta.setColor(armorColor);
             }
+
             if (isBanner && !patterns.isEmpty()) {
                 BannerMeta bannerMeta = (BannerMeta) itemMeta;
                 bannerMeta.setPatterns(patterns);
             }
+
             if (isShield && !patterns.isEmpty()) {
                 BlockStateMeta shieldMeta = (BlockStateMeta) itemMeta;
                 Banner banner = (Banner) shieldMeta.getBlockState();
@@ -859,16 +836,20 @@ public class ItemBuilder {
                 banner.update();
                 shieldMeta.setBlockState(banner);
             }
+
             if (useCustomModelData) {
                 itemMeta.setCustomModelData(customModelData);
             }
+
             itemFlags.forEach(itemMeta :: addItemFlags);
             item.setItemMeta(itemMeta);
             hideFlags(item);
             item.addUnsafeEnchantments(enchantments);
             addGlow(item);
             NBTItem nbt = new NBTItem(item);
+
             if (isHead) {nbt.setString("SkullOwner", player);}
+
             if (isMobEgg) {
                 if (entityType != null) {
                     nbt.addCompound("EntityTag").setString("id", "minecraft:" + entityType.name());
@@ -878,6 +859,7 @@ public class ItemBuilder {
             if (!crateName.isEmpty()) {
                 nbt.setString("CrazyCrates-Crate", crateName);
             }
+
             return nbt.getItem();
         } else {
             return item;
@@ -1006,8 +988,7 @@ public class ItemBuilder {
             try {
                 String[] rgb = color.split(",");
                 return Color.fromRGB(Integer.parseInt(rgb[0]), Integer.parseInt(rgb[1]), Integer.parseInt(rgb[2]));
-            } catch (Exception ignore) {
-            }
+            } catch (Exception ignore) {}
         }
         return null;
     }
@@ -1020,8 +1001,7 @@ public class ItemBuilder {
                 try {
                     String[] rgb = color.split(",");
                     return DyeColor.getByColor(Color.fromRGB(Integer.parseInt(rgb[0]), Integer.parseInt(rgb[1]), Integer.parseInt(rgb[2])));
-                } catch (Exception ignore) {
-                }
+                } catch (Exception ignore) {}
             }
         }
         return null;

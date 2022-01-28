@@ -13,38 +13,40 @@ import org.bukkit.event.Listener;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
-
 import java.util.ArrayList;
 
 public class Wonder implements Listener {
     
-    private static CrazyManager cc = CrazyManager.getInstance();
-    
     public static void startWonder(final Player player, Crate crate, KeyType keyType, boolean checkHand) {
-        if (!cc.takeKeys(1, player, crate, keyType, checkHand)) {
+
+        if (!CrazyManager.getInstance().takeKeys(1, player, crate, keyType, checkHand)) {
             Methods.failedToTakeKey(player, crate);
-            cc.removePlayerFromOpeningList(player);
+            CrazyManager.getInstance().removePlayerFromOpeningList(player);
             return;
         }
+
         final Inventory inv = CrazyManager.getJavaPlugin().getServer().createInventory(null, 45, crate.getCrateInventoryName());
         final ArrayList<String> slots = new ArrayList<>();
+
         for (int i = 0; i < 45; i++) {
             Prize prize = crate.pickPrize(player);
             slots.add(i + "");
             inv.setItem(i, prize.getDisplayItem());
         }
+
         player.openInventory(inv);
-        cc.addCrateTask(player, new BukkitRunnable() {
-            int fulltime = 0;
+        CrazyManager.getInstance().addCrateTask(player, new BukkitRunnable() {
+            int fullTime = 0;
             int timer = 0;
             int slot1 = 0;
             int slot2 = 44;
-            ArrayList<Integer> Slots = new ArrayList<>();
+            final ArrayList<Integer> Slots = new ArrayList<>();
             Prize prize = null;
             
             @Override
             public void run() {
-                if (timer >= 2 && fulltime <= 65) {
+
+                if (timer >= 2 && fullTime <= 65) {
                     slots.remove(slot1 + "");
                     slots.remove(slot2 + "");
                     Slots.add(slot1);
@@ -58,25 +60,29 @@ public class Wonder implements Listener {
                     slot1++;
                     slot2--;
                 }
-                if (fulltime > 67) {
+
+                if (fullTime > 67) {
                     ItemStack item = Methods.getRandomPaneColor().setName(" ").build();
                     for (int slot : Slots) {
                         inv.setItem(slot, item);
                     }
                 }
+
                 player.openInventory(inv);
-                if (fulltime > 100) {
-                    cc.endCrate(player);
+
+                if (fullTime > 100) {
+                    CrazyManager.getInstance().endCrate(player);
                     player.closeInventory();
-                    cc.givePrize(player, prize);
-                    if (prize.useFireworks()) {
-                        Methods.fireWork(player.getLocation().add(0, 1, 0));
-                    }
+                    CrazyManager.getInstance().givePrize(player, prize);
+
+                    if (prize.useFireworks()) Methods.fireWork(player.getLocation().add(0, 1, 0));
+
                     CrazyManager.getJavaPlugin().getServer().getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, crate.getName(), prize));
-                    cc.removePlayerFromOpeningList(player);
+                    CrazyManager.getInstance().removePlayerFromOpeningList(player);
                     return;
                 }
-                fulltime++;
+
+                fullTime++;
                 timer++;
                 if (timer > 2) {
                     timer = 0;

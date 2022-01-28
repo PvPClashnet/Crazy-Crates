@@ -15,13 +15,11 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.material.Chest;
 import org.bukkit.scheduler.BukkitRunnable;
-
 import java.util.*;
 
 public class QuadCrateSession {
-    
-    private static final CrazyManager cc = CrazyManager.getInstance();
-    private static final NMSSupport nms = cc.getNMSSupport();
+
+    private static final NMSSupport nms = CrazyManager.getInstance().getNMSSupport();
     private static final List<QuadCrateSession> crateSessions = new ArrayList<>();
     private static final List<Material> blacklistBlocks = nms.getQuadCrateBlacklistBlocks();
     
@@ -88,28 +86,33 @@ public class QuadCrateSession {
      * @return True if the crate started successfully and false if it could not start.
      */
     public Boolean startCrate() {
+
         //Check if the spawnLocation is on a block
         if (spawnLocation.clone().subtract(0, 1, 0).getBlock().getType() == Material.AIR) {
             player.sendMessage(Messages.NOT_ON_BLOCK.getMessage());
-            cc.removePlayerFromOpeningList(player);
+            CrazyManager.getInstance().removePlayerFromOpeningList(player);
             crateSessions.remove(instance);
             return false;
         }
-        if (cc.getCrateSchematics().isEmpty()) {
+
+        if (CrazyManager.getInstance().getCrateSchematics().isEmpty()) {
             player.sendMessage(Messages.NO_SCHEMATICS_FOUND.getMessage());
             return false;
         }
-        crateSchematic = cc.getCrateSchematics().get(new Random().nextInt(cc.getCrateSchematics().size()));
+
+        crateSchematic = CrazyManager.getInstance().getCrateSchematics().get(new Random().nextInt(CrazyManager.getInstance().getCrateSchematics().size()));
         schematicLocations = nms.getLocations(crateSchematic.getSchematicFile(), spawnLocation.clone());
         //Check if the locations are all able to be changed
+
         for (Location loc : schematicLocations) {
             if (blacklistBlocks.contains(loc.getBlock())) {
                 player.sendMessage(Messages.NEEDS_MORE_ROOM.getMessage());
-                cc.removePlayerFromOpeningList(player);
+                CrazyManager.getInstance().removePlayerFromOpeningList(player);
                 crateSessions.remove(instance);
                 return false;
             }
         }
+
         //Checking if players nearby are opening a quadcrate.
         List<Entity> shovePlayers = new ArrayList<>();
         for (Entity entity : player.getNearbyEntities(3, 3, 3)) {
@@ -117,7 +120,7 @@ public class QuadCrateSession {
                 for (QuadCrateSession ongoingCrate : crateSessions) {
                     if (entity.getUniqueId() == ongoingCrate.getPlayer().getUniqueId()) {
                         player.sendMessage(Messages.TO_CLOSE_TO_ANOTHER_PLAYER.getMessage("%Player%", entity.getName()));
-                        cc.removePlayerFromOpeningList(player);
+                        CrazyManager.getInstance().removePlayerFromOpeningList(player);
                         crateSessions.remove(instance);
                         return false;
                     }
@@ -125,24 +128,28 @@ public class QuadCrateSession {
                 shovePlayers.add(entity);
             }
         }
-        if (!cc.takeKeys(1, player, crate, keyType, checkHand)) {
+
+        if (!CrazyManager.getInstance().takeKeys(1, player, crate, keyType, checkHand)) {
             Methods.failedToTakeKey(player, crate);
-            cc.removePlayerFromOpeningList(player);
+            CrazyManager.getInstance().removePlayerFromOpeningList(player);
             crateSessions.remove(instance);
             return false;
         }
-        if (cc.getHologramController() != null) {
-            cc.getHologramController().removeHologram(spawnLocation.getBlock());
-        }
+
+        if (CrazyManager.getInstance().getHologramController() != null) CrazyManager.getInstance().getHologramController().removeHologram(spawnLocation.getBlock());
+
         player.teleport(spawnLocation.clone().add(.5, 0, .5));
+
         //Shove other players away from the player
         shovePlayers.forEach(entity -> entity.getLocation().toVector().subtract(spawnLocation.clone().toVector()).normalize().setY(1));
+
         //Add the chestLocations
-        chestLocations.add(spawnLocation.clone().add(2, 0, 0));//East
-        chestLocations.add(spawnLocation.clone().add(0, 0, 2));//South
-        chestLocations.add(spawnLocation.clone().add(-2, 0, 0));//West
-        chestLocations.add(spawnLocation.clone().add(0, 0, -2));//North
+        chestLocations.add(spawnLocation.clone().add(2, 0, 0)); //East
+        chestLocations.add(spawnLocation.clone().add(0, 0, 2)); //South
+        chestLocations.add(spawnLocation.clone().add(-2, 0, 0)); //West
+        chestLocations.add(spawnLocation.clone().add(0, 0, -2)); //North
         chestLocations.forEach(location -> chestsOpened.put(location, false));
+
         //Save the oldBlock states
         for (Location loc : schematicLocations) {
             if (chestLocations.contains(loc)) {
@@ -151,10 +158,12 @@ public class QuadCrateSession {
                 oldBlocks.put(loc.clone(), loc.getBlock().getState());
             }
         }
+
         nms.pasteSchematic(crateSchematic.getSchematicFile(), spawnLocation.clone());
         schematicLocations.forEach(location -> location.getBlock().getState().update());
-        cc.addQuadCrateTask(player, new BukkitRunnable() {
-            double radius = 0.0;//Radius of the particle spiral
+
+        CrazyManager.getInstance().addQuadCrateTask(player, new BukkitRunnable() {
+            double radius = 0.0; //Radius of the particle spiral
             int crateNumber = 0; //The crate number that spawns next
             int tickTillSpawn = 0; //At tick 60 the crate will spawn and then reset the tick
             Location particleLocation = chestLocations.get(crateNumber).clone().add(.5, 3, .5);
@@ -171,8 +180,8 @@ public class QuadCrateSession {
                     Block chest = chestLocations.get(crateNumber).getBlock();
                     chest.setType(Material.CHEST);
                     rotateChest(chest, crateNumber);
-                    if (crateNumber == 3) {//Last crate has spawned
-                        cc.endQuadCrate(player);//Is canceled when method is called.
+                    if (crateNumber == 3) { //Last crate has spawned
+                        CrazyManager.getInstance().endQuadCrate(player); //Is canceled when method is called.
                     } else {
                         tickTillSpawn = 0;
                         crateNumber++;
@@ -184,32 +193,25 @@ public class QuadCrateSession {
                 }//154 - 33
             }
         }.runTaskTimer(CrazyManager.getJavaPlugin(), 0, 1));
-        cc.addCrateTask(player, new BukkitRunnable() {
+
+        CrazyManager.getInstance().addCrateTask(player, new BukkitRunnable() {
             @Override
             public void run() {
                 endCrateForce(true);
                 player.sendMessage(Messages.OUT_OF_TIME.getMessage());
             }
-        }.runTaskLater(CrazyManager.getJavaPlugin(), cc.getQuadCrateTimer()));
+        }.runTaskLater(CrazyManager.getJavaPlugin(), CrazyManager.getInstance().getQuadCrateTimer()));
         return true;
     }
     
     public void endCrate() {
         oldBlocks.keySet().forEach(location -> oldBlocks.get(location).update(true, false));
-        new BukkitRunnable() {
-            @Override
-            public void run() {
-                chestLocations.forEach(location -> oldChestBlocks.get(location).update(true, false));
-                displayedRewards.forEach(Entity :: remove);
-                player.teleport(lastLocation);
-                if (cc.getHologramController() != null) {
-                    cc.getHologramController().createHologram(spawnLocation.getBlock(), crate);
-                }
-                cc.endCrate(player);
-                cc.removePlayerFromOpeningList(player);
-                crateSessions.remove(instance);
-            }
-        }.runTaskLater(CrazyManager.getJavaPlugin(), 3 * 20);
+        chestLocations.forEach(location -> oldChestBlocks.get(location).update(true, false));
+        displayedRewards.forEach(Entity :: remove);
+        player.teleport(lastLocation);
+        if (CrazyManager.getInstance().getHologramController() != null) {
+            CrazyManager.getInstance().getHologramController().createHologram(spawnLocation.getBlock(), crate);
+        }
     }
     
     public void endCrateForce(boolean removeFromSessions) {
@@ -217,10 +219,8 @@ public class QuadCrateSession {
         chestLocations.forEach(location -> oldChestBlocks.get(location).update(true, false));
         displayedRewards.forEach(Entity :: remove);
         player.teleport(lastLocation);
-        cc.removePlayerFromOpeningList(player);
-        if (removeFromSessions) {
-            crateSessions.remove(instance);
-        }
+        CrazyManager.getInstance().removePlayerFromOpeningList(player);
+        if (removeFromSessions) crateSessions.remove(instance);
     }
     
     public Crate getCrate() {
@@ -262,9 +262,7 @@ public class QuadCrateSession {
     
     public Boolean allChestsOpened() {
         for (Map.Entry<Location, Boolean> location : chestsOpened.entrySet()) {
-            if (!location.getValue()) {
-                return false;
-            }
+            if (!location.getValue()) return false;
         }
         return true;
     }
@@ -295,60 +293,62 @@ public class QuadCrateSession {
     
     private ArrayList<Location> getSpiralLocationsClockwise(Location center) {
         World world = center.getWorld();
-        double downwardsDistnance = .05;
+        double downwardsDistance = .05;
         double expandingRadius = .08;
         double y = center.getY();
         double radius = 0;
-        int amount = 10;//Amount of particles in each circle
+        int amount = 10; //Amount of particles in each circle
         int increaseRadius = 0;
-        int nextLocation = 0;//The limit of how far the circle goes before reset.
-        double increment = (2 * Math.PI) / amount;//Spacing
+        int nextLocation = 0; //The limit of how far the circle goes before reset.
+        double increment = (2 * Math.PI) / amount; //Spacing
         ArrayList<Location> locations = new ArrayList<>();
+
         for (int i = 0; i < 60; i++) {
             double angle = nextLocation * increment;
             double x = center.getX() + (radius * Math.cos(angle));
             double z = center.getZ() + (radius * Math.sin(angle));
             locations.add(new Location(world, x, y, z));
-            y -= downwardsDistnance;
+            y -= downwardsDistance;
             nextLocation++;
             increaseRadius++;
+
             if (increaseRadius == 6) {
                 increaseRadius = 0;
                 radius += expandingRadius;
             }
-            if (nextLocation == 10) {
-                nextLocation = 0;
-            }
+
+            if (nextLocation == 10) nextLocation = 0;
         }
         return locations;
     }
     
     private ArrayList<Location> getSpiralLocationsCounterClockwise(Location center) {
         World world = center.getWorld();
-        double downwardsDistnance = .05;
+        double downwardsDistance = .05;
         double expandingRadius = .08;
         double y = center.getY();
         double radius = 0;
-        int amount = 10;//Amount of particles in each circle
+        int amount = 10; //Amount of particles in each circle
         int increaseRadius = 0;
-        int nextLocation = 0;//The limit of how far the circle goes before reset.
-        double increment = (2 * Math.PI) / amount;//Spacing
+        int nextLocation = 0; //The limit of how far the circle goes before reset.
+        double increment = (2 * Math.PI) / amount; //Spacing
         ArrayList<Location> locations = new ArrayList<>();
+
         for (int i = 0; i < 60; i++) {
             double angle = nextLocation * increment;
             double x = center.getX() - (radius * Math.cos(angle));
             double z = center.getZ() - (radius * Math.sin(angle));
             locations.add(new Location(world, x, y, z));
-            y -= downwardsDistnance;
+            y -= downwardsDistance;
             nextLocation++;
             increaseRadius++;
+
             if (increaseRadius == 6) {
                 increaseRadius = 0;
                 radius += expandingRadius;
             }
-            if (nextLocation == 10) {
-                nextLocation = 0;
-            }
+
+            if (nextLocation == 10) nextLocation = 0;
         }
         return locations;
     }
@@ -368,6 +368,7 @@ public class QuadCrateSession {
             case SPELL_WITCH -> Particle.SPELL_WITCH;
             default -> Particle.REDSTONE;
         };
+
         if (particle == Particle.REDSTONE) {
             location1.getWorld().spawnParticle(particle, location1, 0, new DustOptions(particleColor, 1));
             location2.getWorld().spawnParticle(particle, location2, 0, new DustOptions(particleColor, 1));

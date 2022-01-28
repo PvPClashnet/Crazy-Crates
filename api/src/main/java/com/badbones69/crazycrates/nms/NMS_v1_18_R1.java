@@ -10,7 +10,6 @@ import org.bukkit.block.Block;
 import org.bukkit.craftbukkit.v1_18_R1.CraftWorld;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -43,7 +42,7 @@ public class NMS_v1_18_R1 implements NMSSupport {
         }
     }
 
-    //https://www.spigotmc.org/threads/pasting-schematics-in-1-13.333643/#post-3312204
+    // https://www.spigotmc.org/threads/pasting-schematics-in-1-13.333643/#post-3312204
     @Override
     public void pasteSchematic(File f, Location loc) {
         try {

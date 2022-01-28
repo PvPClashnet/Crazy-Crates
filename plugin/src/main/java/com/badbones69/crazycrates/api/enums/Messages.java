@@ -3,10 +3,8 @@ package com.badbones69.crazycrates.api.enums;
 import com.badbones69.crazycrates.api.FileManager;
 import com.badbones69.crazycrates.Methods;
 import org.bukkit.configuration.file.FileConfiguration;
-
 import java.util.*;
 import java.util.Map.Entry;
-
 import static com.badbones69.crazycrates.func.ConstantsKt.color;
 
 public enum Messages {
@@ -108,6 +106,7 @@ public enum Messages {
     public static void addMissingMessages() {
         FileConfiguration messages = FileManager.Files.MESSAGES.getFile();
         boolean saveFile = false;
+
         for (Messages message : values()) {
             if (!messages.contains("Messages." + message.getPath())) {
                 saveFile = true;
@@ -118,9 +117,8 @@ public enum Messages {
                 }
             }
         }
-        if (saveFile) {
-            FileManager.Files.MESSAGES.saveFile();
-        }
+
+        if (saveFile) FileManager.Files.MESSAGES.saveFile();
     }
     
     public static String replacePlaceholders(String placeholder, String replacement, String message) {
@@ -190,6 +188,7 @@ public enum Messages {
         String message;
         boolean isList = isList();
         boolean exists = exists();
+
         if (isList) {
             if (exists) {
                 message = color(convertList(FileManager.Files.MESSAGES.getFile().getStringList("Messages." + path)));
@@ -203,19 +202,22 @@ public enum Messages {
                 message = color(getDefaultMessage());
             }
         }
+
         for (Entry<String, String> placeholder : placeholders.entrySet()) {
             message = message.replace(placeholder.getKey(), placeholder.getValue())
             .replace(placeholder.getKey().toLowerCase(), placeholder.getValue());
         }
-        if (isList) {//Don't want to add a prefix to a list of messages.
+
+        if (isList) { //Don't want to add a prefix to a list of messages.
             return color(message);
-        } else {//If the message isn't a list.
-            if (prefix) {//If the message needs a prefix.
+        } else { //If the message isn't a list.
+            if (prefix) { //If the message needs a prefix.
                 return Methods.getPrefix(message);
-            } else {//If the message doesn't need a prefix.
+            } else { //If the message doesn't need a prefix.
                 return color(message);
             }
         }
+
     }
     
     private boolean exists() {
@@ -223,6 +225,7 @@ public enum Messages {
     }
     
     private boolean isList() {
+
         if (FileManager.Files.MESSAGES.getFile().contains("Messages." + path)) {
             return !FileManager.Files.MESSAGES.getFile().getStringList("Messages." + path).isEmpty();
         } else {

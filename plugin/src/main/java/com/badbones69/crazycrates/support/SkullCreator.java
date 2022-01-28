@@ -7,7 +7,6 @@ import org.bukkit.block.Block;
 import org.bukkit.block.Skull;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.SkullMeta;
-
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Base64;
@@ -83,7 +82,6 @@ public class SkullCreator {
         SkullMeta meta = (SkullMeta) item.getItemMeta();
         meta.setOwningPlayer(CrazyManager.getJavaPlugin().getServer().getOfflinePlayer(id));
         item.setItemMeta(meta);
-        
         return item;
     }
     

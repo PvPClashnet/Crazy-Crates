@@ -17,7 +17,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryView;
 import org.bukkit.inventory.ItemStack;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -41,7 +40,7 @@ public class Crate {
     private ArrayList<Prize> prizes;
     private String crateInventoryName;
     private boolean giveNewPlayerKeys;
-    private int previewChestlines;
+    private int previewChestLines;
     private int newPlayerKeys;
     private ArrayList<ItemStack> preview;
     private ArrayList<Tier> tiers;
@@ -57,6 +56,7 @@ public class Crate {
      * @param prizes The prizes that can be won.
      * @param file The crate file.
      */
+
     public Crate(String name, String previewName, CrateType crateType, ItemStack key, ArrayList<Prize> prizes, FileConfiguration file, int newPlayerKeys, ArrayList<Tier> tiers, CrateHologram hologram) {
         ItemBuilder itemBuilder = ItemBuilder.convertItemStack(key);
         this.keyNoNBT = itemBuilder.build();
@@ -74,23 +74,19 @@ public class Crate {
         this.preview = loadPreview();
         this.previewToggle = file != null && (!file.contains("Crate.Preview.Toggle") || file.getBoolean("Crate.Preview.Toggle"));
         this.boarderToggle = file != null && file.getBoolean("Crate.Preview.Glass.Toggle");
-        setPreviewChestlines(file != null ? file.getInt("Crate.Preview.ChestLines", 6) : 6);
+        setPreviewChestLines(file != null ? file.getInt("Crate.Preview.ChestLines", 6) : 6);
         this.previewName = Methods.sanitizeColor(previewName);
         this.newPlayerKeys = newPlayerKeys;
         this.giveNewPlayerKeys = newPlayerKeys > 0;
-        this.maxSlots = previewChestlines * 9;
+        this.maxSlots = previewChestLines * 9;
         for (int amount = preview.size(); amount > maxSlots - (boarderToggle ? 18 : maxSlots == preview.size() ? 0 : maxSlots != 9 ? 9 : 0); amount -= maxSlots - (boarderToggle ? 18 : maxSlots == preview.size() ? 0 : maxSlots != 9 ? 9 : 0), maxPage++) ;
         this.crateInventoryName = file != null ? Methods.sanitizeColor(file.getString("Crate.CrateName")) : "";
         this.boarderItem = file != null && file.contains("Crate.Preview.Glass.Item") ? new ItemBuilder().setMaterial(file.getString("Crate.Preview.Glass.Item")).setName(" ") : new ItemBuilder().setMaterial(Material.AIR);
         this.hologram = hologram != null ? hologram : new CrateHologram();
+
         //TODO Add more managers for editing other crate types.
-        switch (crateType) {
-            case COSMIC:
-                this.manager = new CosmicCrateManager(file);
-                break;
-            default:
-                break;
-        }
+
+        if (crateType == CrateType.COSMIC) this.manager = new CosmicCrateManager(file);
     }
     
     /**
@@ -104,12 +100,12 @@ public class Crate {
      * Set the preview lines for a Crate.
      * @param amount The amount of lines the preview has.
      */
-    public void setPreviewChestlines(int amount) {
+    public void setPreviewChestLines(int amount) {
         int finalAmount;
         if (amount < 3 && boarderToggle) {
             finalAmount = 3;
         } else finalAmount = Math.min(amount, 6);
-        this.previewChestlines = finalAmount;
+        previewChestLines = finalAmount;
     }
     
     /**
@@ -117,7 +113,7 @@ public class Crate {
      * @return The amount of lines it is set to show.
      */
     public int getPreviewChestLines() {
-        return this.previewChestlines;
+        return previewChestLines;
     }
     
     /**
@@ -144,10 +140,11 @@ public class Crate {
      */
     public Prize pickPrize(Player player) {
         ArrayList<Prize> prizes = new ArrayList<>();
-        ArrayList<Prize> useablePrizes = new ArrayList<>();
+        ArrayList<Prize> usablePrizes = new ArrayList<>();
         // ================= Blacklist Check ================= //
+
         if (player.isOp()) {
-            useablePrizes.addAll(getPrizes());
+            usablePrizes.addAll(getPrizes());
         } else {
             for (Prize prize : getPrizes()) {
                 if (prize.hasBlacklistPermission(player)) {
@@ -155,12 +152,14 @@ public class Crate {
                         continue;
                     }
                 }
-                useablePrizes.add(prize);
+                usablePrizes.add(prize);
             }
         }
+
         // ================= Chance Check ================= //
+
         for (int stop = 0; prizes.size() == 0 && stop <= 2000; stop++) {
-            for (Prize prize : useablePrizes) {
+            for (Prize prize : usablePrizes) {
                 int max = prize.getMaxRange();
                 int chance = prize.getChance();
                 int num;
@@ -172,10 +171,11 @@ public class Crate {
                 }
             }
         }
+
         try {
             return prizes.get(new Random().nextInt(prizes.size()));
         } catch (IllegalArgumentException e) {
-            CrazyManager.getJavaPlugin().getLogger().warning("[CrazyCrates] Failed to find prize from the " + name + " crate for player " + player.getName() + ".");
+            CrazyManager.getJavaPlugin().getLogger().warning("Failed to find prize from the " + name + " crate for player " + player.getName() + ".");
             return null;
         }
     }
@@ -190,6 +190,7 @@ public class Crate {
         ArrayList<Prize> prizes = new ArrayList<>();
         ArrayList<Prize> useablePrizes = new ArrayList<>();
         // ================= Blacklist Check ================= //
+
         if (player.isOp()) {
             for (Prize prize : getPrizes()) {
                 if (prize.getTiers().contains(tier)) {
@@ -198,16 +199,19 @@ public class Crate {
             }
         } else {
             for (Prize prize : getPrizes()) {
+
                 if (prize.hasBlacklistPermission(player)) {
                     if (!prize.hasAltPrize()) {
                         continue;
                     }
                 }
+
                 if (prize.getTiers().contains(tier)) {
                     useablePrizes.add(prize);
                 }
             }
         }
+
         // ================= Chance Check ================= //
         for (int stop = 0; prizes.size() == 0 && stop <= 2000; stop++) {
             for (Prize prize : useablePrizes) {
@@ -220,6 +224,7 @@ public class Crate {
                         prizes.add(prize);
                     }
                 }
+
             }
         }
         return prizes.get(new Random().nextInt(prizes.size()));
@@ -233,9 +238,7 @@ public class Crate {
      */
     public Prize pickPrize(Player player, Location location) {
         Prize prize = pickPrize(player);
-        if (prize.useFireworks()) {
-            Methods.fireWork(location);
-        }
+        if (prize.useFireworks()) Methods.fireWork(location);
         return prize;
     }
     
@@ -338,6 +341,7 @@ public class Crate {
     public Inventory getPreview(Player player, int page) {
         Inventory inventory = Bukkit.createInventory(null, !boarderToggle && (Preview.playerInMenu(player) || maxPage > 1) && maxSlots == 9 ? maxSlots + 9 : maxSlots, previewName);
         setDefaultItems(inventory, player);
+
         for (ItemStack item : getPageItems(page)) {
             int nextSlot = inventory.firstEmpty();
             if (nextSlot >= 0) {
@@ -346,6 +350,7 @@ public class Crate {
                 break;
             }
         }
+
         return inventory;
     }
     
@@ -434,15 +439,18 @@ public class Crate {
      * @return The prize you asked for.
      */
     public Prize getPrize(String name) {
+
         for (Prize prize : prizes) {
             if (prize.getName().equalsIgnoreCase(name)) {
                 return prize;
             }
         }
+
         return null;
     }
     
     public Prize getPrize(ItemStack item) {
+
         try {
             NBTItem nbt = new NBTItem(item);
             if (nbt.hasKey("crazycrate-prize")) {
@@ -455,6 +463,7 @@ public class Crate {
                 return prize;
             }
         }
+
         return null;
     }
     
@@ -484,23 +493,30 @@ public class Crate {
         items.add(item);
         String path = "Crate.Prizes." + prize;
         if (!file.contains(path)) {
+
             if (item.hasItemMeta()) {
                 if (item.getItemMeta().hasDisplayName()) file.set(path + ".DisplayName", item.getItemMeta().getDisplayName());
                 if (item.getItemMeta().hasLore()) file.set(path + ".Lore", item.getItemMeta().getLore());
             }
+
             NBTItem nbtItem = new NBTItem(item);
+
             if (nbtItem.hasNBTData()) {
                 if (nbtItem.hasKey("Unbreakable") && nbtItem.getBoolean("Unbreakable")) {
                     file.set(path + ".Unbreakable", true);
                 }
             }
+
             List<String> enchantments = new ArrayList<>();
+
             for (Enchantment enchantment : item.getEnchantments().keySet()) {
                 enchantments.add((cc.useNewMaterial() ? enchantment.getKey().getKey() : enchantment.getName()) + ":" + item.getEnchantments().get(enchantment));
             }
+
             if (!enchantments.isEmpty()) {
                 file.set(path + ".DisplayEnchantments", enchantments);
             }
+
             file.set(path + ".DisplayItem", cc.useNewMaterial() ? item.getType().name() : item.getType().name() + ":" + item.getDurability());
             file.set(path + ".DisplayAmount", item.getAmount());
             file.set(path + ".MaxRange", 100);
@@ -540,7 +556,7 @@ public class Crate {
     }
     
     public int getAbsoluteItemPosition(int baseSlot) {
-        return baseSlot + (previewChestlines > 1 ? previewChestlines - 1 : 1) * 9;
+        return baseSlot + (previewChestLines > 1 ? previewChestLines - 1 : 1) * 9;
     }
     
     private boolean isInventoryNameSimilar(String inventory1, String inventory2) {
@@ -553,22 +569,28 @@ public class Crate {
      */
     private ArrayList<ItemStack> loadPreview() {
         ArrayList<ItemStack> items = new ArrayList<>();
+
         for (Prize prize : getPrizes()) {
             items.add(prize.getDisplayItem());
         }
+
         return items;
     }
     
     private List<ItemStack> getPageItems(int page) {
         List<ItemStack> list = preview;
         List<ItemStack> items = new ArrayList<>();
+
         if (page <= 0) page = 1;
+
         int max = maxSlots - (boarderToggle ? 18 : maxSlots == preview.size() ? 0 : maxSlots != 9 ? 9 : 0);
         int index = page * max - max;
         int endIndex = index >= list.size() ? list.size() - 1 : index + max;
+
         for (; index < endIndex; index++) {
             if (index < list.size()) items.add(list.get(index));
         }
+
         for (; items.isEmpty(); page--) {
             if (page <= 0) break;
             index = page * max - max;
@@ -577,26 +599,34 @@ public class Crate {
                 if (index < list.size()) items.add(list.get(index));
             }
         }
+
         return items;
     }
     
     private void setDefaultItems(Inventory inventory, Player player) {
+
         if (boarderToggle) {
             List<Integer> borderItems = Arrays.asList(0, 1, 2, 3, 4, 5, 6, 7, 8);
+
             for (int i : borderItems) {//Top Boarder slots
                 inventory.setItem(i, boarderItem.build());
             }
+
             for (int i = 0; i < borderItems.size(); i++) {
                 borderItems.set(i, getAbsoluteItemPosition(borderItems.get(i)));
             }
+
             for (int i : borderItems) {//Bottom Boarder slots
                 inventory.setItem(i, boarderItem.build());
             }
+
         }
         int page = Preview.getPage(player);
+
         if (Preview.playerInMenu(player)) {
             inventory.setItem(getAbsoluteItemPosition(4), Preview.getMenuButton());
         }
+
         if (page == 1) {
             if (boarderToggle) {
                 inventory.setItem(getAbsoluteItemPosition(3), boarderItem.build());
@@ -604,6 +634,7 @@ public class Crate {
         } else {
             inventory.setItem(getAbsoluteItemPosition(3), Preview.getBackButton(player));
         }
+
         if (page == maxPage) {
             if (boarderToggle) {
                 inventory.setItem(getAbsoluteItemPosition(5), boarderItem.build());
@@ -611,5 +642,6 @@ public class Crate {
         } else {
             inventory.setItem(getAbsoluteItemPosition(5), Preview.getNextButton(player));
         }
+
     }
 }

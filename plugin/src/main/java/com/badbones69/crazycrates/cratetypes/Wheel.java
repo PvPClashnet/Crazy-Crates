@@ -14,7 +14,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -22,27 +21,33 @@ import java.util.Map;
 public class Wheel implements Listener {
     
     public static Map<Player, HashMap<Integer, ItemStack>> rewards = new HashMap<>();
-    private static CrazyManager cc = CrazyManager.getInstance();
     
     public static void startWheel(final Player player, Crate crate, KeyType keyType, boolean checkHand) {
-        if (!cc.takeKeys(1, player, crate, keyType, checkHand)) {
+
+        if (!CrazyManager.getInstance().takeKeys(1, player, crate, keyType, checkHand)) {
             Methods.failedToTakeKey(player, crate);
-            cc.removePlayerFromOpeningList(player);
+            CrazyManager.getInstance().removePlayerFromOpeningList(player);
             return;
         }
+
         final Inventory inv = CrazyManager.getJavaPlugin().getServer().createInventory(null, 54, Methods.sanitizeColor(crate.getFile().getString("Crate.CrateName")));
+
         for (int i = 0; i < 54; i++) {
             inv.setItem(i, new ItemBuilder().setMaterial(Material.BLACK_STAINED_GLASS_PANE).setName(" ").build());
         }
+
         HashMap<Integer, ItemStack> items = new HashMap<>();
+
         for (int i : getBorder()) {
             Prize prize = crate.pickPrize(player);
             inv.setItem(i, prize.getDisplayItem());
             items.put(i, prize.getDisplayItem());
         }
+
         rewards.put(player, items);
         player.openInventory(inv);
-        cc.addCrateTask(player, new BukkitRunnable() {
+
+        CrazyManager.getInstance().addCrateTask(player, new BukkitRunnable() {
             ArrayList<Integer> slots = getBorder();
             int i = 0;
             int f = 17;
@@ -54,12 +59,15 @@ public class Wheel implements Listener {
             
             @Override
             public void run() {
+
                 if (i >= 18) {
                     i = 0;
                 }
+
                 if (f >= 18) {
                     f = 0;
                 }
+
                 if (full < timer) {
                     if (rewards.get(player).get(slots.get(i)).getItemMeta().hasLore()) {
                         inv.setItem(slots.get(i), new ItemBuilder().setMaterial(Material.LIME_STAINED_GLASS_PANE).setName(rewards.get(player).get(slots.get(i)).getItemMeta().getDisplayName()).setLore(rewards.get(player).get(slots.get(i)).getItemMeta().getLore()).build());
@@ -71,7 +79,9 @@ public class Wheel implements Listener {
                     i++;
                     f++;
                 }
+
                 if (full >= timer) {
+
                     if (slowSpin().contains(slower)) {
                         if (rewards.get(player).get(slots.get(i)).getItemMeta().hasLore()) {
                             inv.setItem(slots.get(i), new ItemBuilder().setMaterial(Material.LIME_STAINED_GLASS_PANE).setName(rewards.get(player).get(slots.get(i)).getItemMeta().getDisplayName()).setLore(rewards.get(player).get(slots.get(i)).getItemMeta().getLore()).build());
@@ -83,11 +93,14 @@ public class Wheel implements Listener {
                         i++;
                         f++;
                     }
+
                     if (full == timer + 47) {
                         player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1, 1);
                     }
+
                     if (full >= timer + 47) {
                         slow++;
+
                         if (slow >= 2) {
                             ItemStack item = Methods.getRandomPaneColor().setName(" ").build();
                             for (int slot = 0; slot < 54; slot++) {
@@ -97,14 +110,17 @@ public class Wheel implements Listener {
                             }
                             slow = 0;
                         }
+
                     }
                     if (full >= (timer + 55 + 47)) {
                         Prize prize = null;
-                        if (cc.isInOpeningList(player)) {
+
+                        if (CrazyManager.getInstance().isInOpeningList(player)) {
                             prize = crate.getPrize(rewards.get(player).get(slots.get(f)));
                         }
+
                         if (prize != null) {
-                            cc.givePrize(player, prize);
+                            CrazyManager.getInstance().givePrize(player, prize);
                             if (prize.useFireworks()) {
                                 Methods.fireWork(player.getLocation().add(0, 1, 0));
                             }
@@ -112,18 +128,22 @@ public class Wheel implements Listener {
                         } else {
                             player.sendMessage(Methods.getPrefix("&cNo prize was found, please report this issue if you think this is an error."));
                         }
+
                         player.closeInventory();
-                        cc.removePlayerFromOpeningList(player);
-                        cc.endCrate(player);
+                        CrazyManager.getInstance().removePlayerFromOpeningList(player);
+                        CrazyManager.getInstance().endCrate(player);
                     }
                     slower++;
                 }
+
                 full++;
                 open++;
+
                 if (open > 5) {
                     player.openInventory(inv);
                     open = 0;
                 }
+
             }
         }.runTaskTimer(CrazyManager.getJavaPlugin(), 1, 1));
     }

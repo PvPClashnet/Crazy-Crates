@@ -13,20 +13,19 @@ import org.bukkit.entity.Firework;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.meta.FireworkMeta;
 import org.bukkit.scheduler.BukkitRunnable;
-
 import java.util.ArrayList;
 import java.util.Random;
 
 public class FireCracker {
     
-    private static CrazyManager cc = CrazyManager.getInstance();
-    
     public static void startFireCracker(final Player player, final Crate crate, KeyType keyType, final Location loc) {
-        if (!cc.takeKeys(1, player, crate, keyType, true)) {
+
+        if (!CrazyManager.getInstance().takeKeys(1, player, crate, keyType, true)) {
             Methods.failedToTakeKey(player, crate);
-            cc.removePlayerFromOpeningList(player);
+            CrazyManager.getInstance().removePlayerFromOpeningList(player);
             return;
         }
+
         final ArrayList<Color> colors = new ArrayList<>();
         colors.add(Color.RED);
         colors.add(Color.YELLOW);
@@ -36,11 +35,11 @@ public class FireCracker {
         colors.add(Color.AQUA);
         colors.add(Color.MAROON);
         colors.add(Color.PURPLE);
-        cc.addCrateTask(player, new BukkitRunnable() {
-            Random r = new Random();
-            int color = r.nextInt(colors.size());
+        CrazyManager.getInstance().addCrateTask(player, new BukkitRunnable() {
+            final Random r = new Random();
+            final int color = r.nextInt(colors.size());
             int l = 0;
-            Location L = loc.clone().add(.5, 25, .5);
+            final Location L = loc.clone().add(.5, 25, .5);
             
             @Override
             public void run() {
@@ -48,7 +47,7 @@ public class FireCracker {
                 fireWork(L, colors.get(color));
                 l++;
                 if (l == 25) {
-                    cc.endCrate(player);
+                    CrazyManager.getInstance().endCrate(player);
                     // The key type is set to free because the key has already been taken above.
                     QuickCrate.openCrate(player, loc, crate, KeyType.FREE_KEY);
                 }
@@ -63,10 +62,6 @@ public class FireCracker {
         fm.setPower(0);
         fw.setFireworkMeta(fm);
         FireworkDamageEvent.addFirework(fw);
-        new BukkitRunnable() {
-            public void run() {
-                fw.detonate();
-            }
-        }.runTaskLaterAsynchronously(CrazyManager.getJavaPlugin(), 1);
+        fw.detonate();
     }
 }

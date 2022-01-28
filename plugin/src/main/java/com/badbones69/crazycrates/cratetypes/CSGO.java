@@ -14,13 +14,10 @@ import org.bukkit.event.Listener;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 
 public class CSGO implements Listener {
-    
-    private static CrazyManager cc = CrazyManager.getInstance();
     
     private static void setGlass(Inventory inv) {
         HashMap<Integer, ItemStack> glass = new HashMap<>();
@@ -29,6 +26,7 @@ public class CSGO implements Listener {
                 glass.put(i, inv.getItem(i));
             }
         }
+
         for (int i : glass.keySet()) {
             if (inv.getItem(i) == null) {
                 ItemStack item = Methods.getRandomPaneColor().setName(" ").build();
@@ -36,11 +34,13 @@ public class CSGO implements Listener {
                 inv.setItem(i + 18, item);
             }
         }
+
         for (int i = 1; i < 10; i++) {
             if (i < 9 && i != 4) {
                 glass.put(i, inv.getItem(i));
             }
         }
+
         ItemStack item = Methods.getRandomPaneColor().setName(" ").build();
         inv.setItem(0, glass.get(1));
         inv.setItem(18, glass.get(1));
@@ -69,16 +69,16 @@ public class CSGO implements Listener {
             inv.setItem(i, crate.pickPrize(player).getDisplayItem());
         }
         player.openInventory(inv);
-        if (cc.takeKeys(1, player, crate, keyType, checkHand)) {
+        if (CrazyManager.getInstance().takeKeys(1, player, crate, keyType, checkHand)) {
             startCSGO(player, inv, crate);
         } else {
             Methods.failedToTakeKey(player, crate);
-            cc.removePlayerFromOpeningList(player);
+            CrazyManager.getInstance().removePlayerFromOpeningList(player);
         }
     }
     
     private static void startCSGO(final Player player, final Inventory inv, Crate crate) {
-        cc.addCrateTask(player, new BukkitRunnable() {
+        CrazyManager.getInstance().addCrateTask(player, new BukkitRunnable() {
             int time = 1;
             int full = 0;
             int open = 0;
@@ -105,10 +105,10 @@ public class CSGO implements Listener {
                     time++;
                     if (time == 60) {// When done
                         player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1, 1);
-                        cc.endCrate(player);
+                        CrazyManager.getInstance().endCrate(player);
                         Prize prize = crate.getPrize(inv.getItem(13));
                         if (prize != null) {
-                            cc.givePrize(player, prize);
+                            CrazyManager.getInstance().givePrize(player, prize);
                             if (prize.useFireworks()) {
                                 Methods.fireWork(player.getLocation().add(0, 1, 0));
                             }
@@ -116,16 +116,9 @@ public class CSGO implements Listener {
                         } else {
                             player.sendMessage(Methods.getPrefix("&cNo prize was found, please report this issue if you think this is an error."));
                         }
-                        cc.removePlayerFromOpeningList(player);
+                        CrazyManager.getInstance().removePlayerFromOpeningList(player);
                         cancel();
-                        new BukkitRunnable() {
-                            @Override
-                            public void run() {
-                                if (player.getOpenInventory().getTopInventory().equals(inv)) {
-                                    player.closeInventory();
-                                }
-                            }
-                        }.runTaskLater(CrazyManager.getJavaPlugin(), 40);
+                        if (player.getOpenInventory().getTopInventory() == inv) player.closeInventory();
                     } else if (time > 60) {//Added this due reports of the prizes spamming when low tps.
                         cancel();
                     }

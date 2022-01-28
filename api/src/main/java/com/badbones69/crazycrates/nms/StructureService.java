@@ -14,7 +14,6 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.DefinedStruct
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.craftbukkit.v1_18_R1.CraftWorld;
-
 import java.io.*;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -49,6 +48,7 @@ public class StructureService {
     public static void createAndSaveAny(Location[] corners, String author, File destination) throws IOException {
         Location[] normalized = normalizeEdges(corners[0], corners[1]);
         int[] dimensions = getDimensions(normalized);
+
         if (dimensions[0] > 32 || dimensions[1] > 32 || dimensions[2] > 32) {
             DefinedStructure[] structures = createStructuresArray(normalized, author);
             saveStructuresArray(structures, destination);
@@ -79,6 +79,7 @@ public class StructureService {
         Location[] normalized = normalizeEdges(corners[0], corners[1]);
         WorldServer world = ((CraftWorld) normalized[0].getWorld()).getHandle();
         int[] dimensions = getDimensions(normalized);
+
         if (dimensions[0] > 32 || dimensions[1] > 32 || dimensions[2] > 32) throw new IllegalArgumentException("A single structure can only be 32x32x32! If you need more, use #createStructuresArea.");
         DefinedStructure structure = new DefinedStructure();
         structure.a(world, new BlockPosition(normalized[0].getBlockX(), normalized[0].getBlockY(), normalized[0].getBlockZ()), new BlockPosition(dimensions[0], dimensions[1], dimensions[2]), true, Blocks.jb);
@@ -94,6 +95,7 @@ public class StructureService {
     public static void saveSingleStructure(DefinedStructure structure, File destination) throws IOException {
         NBTTagCompound fileTag = new NBTTagCompound();
         fileTag = structure.a(fileTag);
+
         if (structure.b() != null && !structure.b().equals("?")) fileTag.a("author", structure.b());
         NBTCompressedStreamTools.a(fileTag, new FileOutputStream(new File(destination + ".nbt")));
     }
@@ -120,6 +122,7 @@ public class StructureService {
         int[] dimensions = getDimensions(normalized);
         int[] areas = getAreaSections(dimensions);
         DefinedStructure[] structures = new DefinedStructure[areas[0] * areas[1] * areas[2]];
+
         for (int x = 0; x < areas[0]; x++) {
             for (int y = 0; y < areas[1]; y++) {
                 for (int z = 0; z < areas[2]; z++) {
@@ -147,6 +150,7 @@ public class StructureService {
      */
     public static void saveStructuresArray(DefinedStructure[] structures, File folder) throws IOException {
         if (!folder.exists()) folder.mkdirs();
+
         for (int i = 0; i < structures.length; i++) {
             NBTTagCompound fileTag = new NBTTagCompound();
             fileTag = structures[i].a(fileTag);
@@ -241,6 +245,7 @@ public class StructureService {
         int bottomBlockY = (Math.min(startEdge.getBlockY(), endEdge.getBlockY()));
         int topBlockZ = (Math.max(startEdge.getBlockZ(), endEdge.getBlockZ()));
         int bottomBlockZ = (Math.min(startEdge.getBlockZ(), endEdge.getBlockZ()));
+
         for (int x = bottomBlockX; x <= topBlockX; x++) {
             for (int z = bottomBlockZ; z <= topBlockZ; z++) {
                 for (int y = bottomBlockY; y <= topBlockY; y++) {
@@ -271,6 +276,7 @@ public class StructureService {
     public static DefinedStructure[] loadLegacyStructuresArray(File folder, World world) throws IOException, NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
         if (!new File(folder, folder.getName() + ".nbt").exists()) throw new IllegalArgumentException("This is not a valid structure area export folder!");
         DefinedStructure[] structures = new DefinedStructure[folder.listFiles().length - 1];
+
         for (File file : folder.listFiles()) {
             if (!file.getName().equals(folder.getName() + ".nbt")) {
                 Method parseAndConvert = DefinedStructureManager.class.getDeclaredMethod("a", InputStream.class);
@@ -293,6 +299,7 @@ public class StructureService {
     public static DefinedStructure[] loadStructuresArray(File folder) throws IOException {
         if (!new File(folder, folder.getName() + ".nbt").exists()) throw new IllegalArgumentException("This is not a valid structure area export folder!");
         DefinedStructure[] structures = new DefinedStructure[folder.listFiles().length - 1];
+
         for (File file : folder.listFiles()) {
             if (!file.getName().equals(folder.getName() + ".nbt")) {
                 DefinedStructure structure = new DefinedStructure();
@@ -326,6 +333,7 @@ public class StructureService {
     public static void insertStructuresArray(DefinedStructure[] structures, int[] dimensions, Location startEdge, EnumBlockRotation rotation) {
         int[] areas = getAreaSections(dimensions);
         WorldServer world = ((CraftWorld) startEdge.getWorld()).getHandle();
+
         for (int x = 0; x < areas[0]; x++) {
             for (int y = 0; y < areas[1]; y++) {
                 for (int z = 0; z < areas[2]; z++) {
@@ -392,6 +400,7 @@ public class StructureService {
      */
     public static Location[] normalizeEdges(Location startBlock, Location endBlock) {
         int xMin, xMax, yMin, yMax, zMin, zMax;
+
         if (startBlock.getBlockX() <= endBlock.getBlockX()) {
             xMin = startBlock.getBlockX();
             xMax = endBlock.getBlockX();
@@ -399,6 +408,7 @@ public class StructureService {
             xMin = endBlock.getBlockX();
             xMax = startBlock.getBlockX();
         }
+
         if (startBlock.getBlockY() <= endBlock.getBlockY()) {
             yMin = startBlock.getBlockY();
             yMax = endBlock.getBlockY();
@@ -406,6 +416,7 @@ public class StructureService {
             yMin = endBlock.getBlockY();
             yMax = startBlock.getBlockY();
         }
+
         if (startBlock.getBlockZ() <= endBlock.getBlockZ()) {
             zMin = startBlock.getBlockZ();
             zMax = endBlock.getBlockZ();
@@ -413,6 +424,7 @@ public class StructureService {
             zMin = endBlock.getBlockZ();
             zMax = startBlock.getBlockZ();
         }
+
         return new Location[] {new Location(startBlock.getWorld(), xMin, yMin, zMin), new Location(startBlock.getWorld(), xMax, yMax, zMax)};
     }
 
