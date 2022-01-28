@@ -210,15 +210,9 @@ public class CrateControl implements Listener { //Crate Control
     @EventHandler
     public void onLeave(PlayerQuitEvent e) {
         Player player = e.getPlayer();
-        if (cc.hasCrateTask(player)) {
-            cc.endCrate(player);
-        }
-        if (cc.hasQuadCrateTask(player)) {
-            cc.endQuadCrate(player);
-        }
-        if (cc.isInOpeningList(player)) {
-            cc.removePlayerFromOpeningList(player);
-        }
+        if (cc.hasCrateTask(player)) cc.endCrate(player);
+        if (cc.hasQuadCrateTask(player)) cc.endQuadCrate(player);
+        if (cc.isInOpeningList(player)) cc.removePlayerFromOpeningList(player);
     }
     
     public static void knockBack(Player player, Location location) {
