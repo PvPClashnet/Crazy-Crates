@@ -197,5 +197,4 @@ public class War implements Listener {
             }
         }
     }
-
 }

@@ -26,5 +26,4 @@ public enum KeyType {
     public String getName() {
         return name;
     }
-    
 }

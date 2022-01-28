@@ -26,5 +26,4 @@ public class KeyTab implements TabCompleter {
     private boolean hasPermission(CommandSender sender, String node) {
         return sender.hasPermission("crazycrates." + node) || sender.hasPermission("crazycrates.admin");
     }
-    
 }

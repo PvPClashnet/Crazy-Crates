@@ -202,5 +202,4 @@ public class GUIMenu implements Listener {
     private ArrayList<String> getDisabledWorlds() {
         return new ArrayList<>(Files.CONFIG.getFile().getStringList("Settings.DisabledWorlds"));
     }
-    
 }

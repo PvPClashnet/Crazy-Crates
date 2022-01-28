@@ -612,5 +612,4 @@ public class Crate {
             inventory.setItem(getAbsoluteItemPosition(5), Preview.getNextButton(player));
         }
     }
-    
 }

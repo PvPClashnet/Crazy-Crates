@@ -229,5 +229,4 @@ public class CrateControl implements Listener { //Crate Control
         }
         player.setVelocity(vector);
     }
-    
 }

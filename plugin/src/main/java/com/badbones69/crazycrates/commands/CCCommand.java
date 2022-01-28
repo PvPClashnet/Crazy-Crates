@@ -35,7 +35,7 @@ public class CCCommand implements CommandExecutor {
     private final CrazyManager cc = CrazyManager.getInstance();
     
     @Override
-    public boolean onCommand(CommandSender sender, Command cmd, String commandLable, String[] args) {
+    public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args) {
         if (args.length == 0) {
             if (sender instanceof Player) {
                 if (!Methods.permCheck(sender, "menu")) {
@@ -723,5 +723,4 @@ public class CCCommand implements CommandExecutor {
         sender.sendMessage(color(Methods.getPrefix() + "&cPlease do /cc help for more info."));
         return true;
     }
-    
 }

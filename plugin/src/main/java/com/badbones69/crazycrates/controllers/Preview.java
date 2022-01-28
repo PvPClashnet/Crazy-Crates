@@ -146,5 +146,4 @@ public class Preview implements Listener {
     public void backPage(Player player) {
         setPage(player, getPage(player) - 1);
     }
-    
 }

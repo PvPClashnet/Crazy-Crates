@@ -80,5 +80,4 @@ public class PlayerReceiveKeyEvent extends Event implements Cancellable {
          */
         TRANSFER
     }
-    
 }

@@ -32,5 +32,4 @@ public enum CrateType {
     public String getName() {
         return name;
     }
-    
 }

@@ -126,8 +126,6 @@ public class Methods {
         }
     }
 
-
-    
     public static String getPrefix() {
         return color(FileManager.Files.CONFIG.getFile().getString("Settings.Prefix"));
     }
@@ -344,7 +342,7 @@ public class Methods {
     }
     
     public static void failedToTakeKey(Player player, Crate crate, Exception e) {
-        CrazyManager.getJavaPlugin().getServer().getLogger().warning("[CrazyCrates] An error has occurred while trying to take a physical key from a player");
+        CrazyManager.getJavaPlugin().getServer().getLogger().warning("An error has occurred while trying to take a physical key from a player");
         CrazyManager.getJavaPlugin().getServer().getLogger().warning("Player: " + player.getName());
         CrazyManager.getJavaPlugin().getServer().getLogger().warning("Crate: " + crate.getName());
         player.sendMessage(Methods.getPrefix("&cAn issue has occurred when trying to take a key and so the crate failed to open."));

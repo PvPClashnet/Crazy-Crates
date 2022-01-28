@@ -245,7 +245,6 @@ public class SkullCreator {
     }
     
     private static String urlToBase64(String url) {
-        
         URI actualUrl;
         try {
             actualUrl = new URI(url);

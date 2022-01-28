@@ -699,7 +699,5 @@ public class Metrics {
             data.add("values", values);
             return data;
         }
-        
     }
-    
 }

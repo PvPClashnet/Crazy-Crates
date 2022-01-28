@@ -206,5 +206,4 @@ public class Prize {
         }
         return false;
     }
-    
 }
