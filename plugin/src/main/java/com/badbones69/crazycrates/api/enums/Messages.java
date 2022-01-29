@@ -28,20 +28,20 @@ public enum Messages {
     OUT_OF_TIME("Out-Of-Time", "&cYou took 5 Minutes to open the crate so it closed."),
     MUST_BE_A_PLAYER("Must-Be-A-Player", "&cYou must be a player to use this command."),
     MUST_BE_LOOKING_AT_A_BLOCK("Must-Be-Looking-At-A-Block", "&cYou must be looking at a block."),
-    NOT_A_CRATE("Not-A-Crate", "&cThere is no crate called &6%crate%&c."),
+    NOT_A_CRATE("Not-A-Crate", "&cThere is no crate called &6%crate%."),
     NOT_A_NUMBER("Not-A-Number", "&6%number%&c is not a number."),
     GIVEN_A_PLAYER_KEYS("Given-A-Player-Keys", "&7You have given &6%player% %amount% &7Keys."),
     OBTAINING_KEYS("Obtaining-Keys", "&7You have been given &6%amount% %key% &7Keys."),
     GIVEN_EVERYONE_KEYS("Given-Everyone-Keys", "&7You have given everyone &6%amount% &7Keys."),
-    GIVEN_OFFLINE_PLAYER_KEYS("Given-Offline-Player-Keys", "&7You have given &6%amount% &7key(s) to the offline player &6%player%&7."),
-    TAKE_A_PLAYER_KEYS("Take-A-Player-Keys", "&7You have taken &6%amount% &7key(s) from &6%player%&7."),
-    TAKE_OFFLINE_PLAYER_KEYS("Take-Offline-Player-Keys", "&7You have taken &6%amount% &7key(s) from the offline player &6%player%&7."),
-    OPENED_A_CRATE("Opened-A-Crate", "&7You have just opened the &6%crate% &7crate for &6%player%&7."),
+    GIVEN_OFFLINE_PLAYER_KEYS("Given-Offline-Player-Keys", "&7You have given &6%amount% &7key(s) to the offline player &6%player%."),
+    TAKE_A_PLAYER_KEYS("Take-A-Player-Keys", "&7You have taken &6%amount% &7key(s) from &6%player%."),
+    TAKE_OFFLINE_PLAYER_KEYS("Take-Offline-Player-Keys", "&7You have taken &6%amount% &7key(s) from the offline player &6%player%."),
+    OPENED_A_CRATE("Opened-A-Crate", "&7You have just opened the &6%crate% &7crate for &6%player%."),
     INTERNAL_ERROR("Internal-Error", "&cAn internal error has occurred. Please check the console for the full error."),
     NO_ITEM_IN_HAND("No-Item-In-Hand", "&cYou need to have an item in your hand to add it to the crate."),
     ADDED_ITEM_WITH_EDITOR("Added-Item-With-Editor", "&7The item has been added to the %crate% crate in prize #%prize%."),
-    CREATED_PHYSICAL_CRATE("Created-Physical-Crate", Arrays.asList("%prefix%&7You have just set that block to %crate%.", "&7To remove the crate shift break in creative to remove.")),
-    REMOVED_PHYSICAL_CRATE("Removed-Physical-Crate", "%prefix% &7You have just removed &6%id%&7."),
+    CREATED_PHYSICAL_CRATE("Created-Physical-Crate", Arrays.asList("%prefix%&7You have set that block to %crate%.", "&7To remove the crate shift break in creative to remove.")),
+    REMOVED_PHYSICAL_CRATE("Removed-Physical-Crate", "%prefix% &7You have just removed &6%id%."),
     PERSONAL_NO_VIRTUAL_KEYS("Keys.Personal.No-Virtual-Keys", "&8&l(&4&l!&8&l) &7You currently do not have any virtual keys."),
     PERSONAL_HEADER("Keys.Personal.Header", Collections.singletonList("&8&l(&6&l!&8&l) &7List of your current amount of keys.")),
     OTHER_PLAYER_NO_VIRTUAL_KEYS("Keys.Other-Player.No-Virtual-Keys", "&8&l(&4&l!&8&l) &7The player %player% does not have any keys.."),
@@ -49,7 +49,7 @@ public enum Messages {
     PER_CRATE("Keys.Per-Crate", "%crate% &7&l>&8&l> &6%keys% keys"),
     QUAD_CRATE_DISABLED("Quad-Crate-Disabled", "&cQuad crate type is currently disabled in this build of Crazy Crates due to 1.13+ changing code."),
     PREVIEW_DISABLED("Preview-Disabled", "&cThe preview for that crate is currently disabled."),
-    NO_SCHEMATICS_FOUND("No-Schematics-Found", "&cNo schematic were found, if using 1.13+ make sure the schematics folder has the new .nbt schematics, if not regenerate the folder."),
+    NO_SCHEMATICS_FOUND("No-Schematics-Found", "&cNo schematic were found, If using 1.13+, Make sure the schematics folder has the new .nbt schematics, If not regenerate the folder."),
     NO_PRIZES_FOUND("No-Prizes-Found", "&cThis crate contains no prizes that you can win."),
     SAME_PLAYER("Same-Player", "&cYou can't use this command on yourself."),
     NOT_ENOUGH_KEYS("Not-Enough-Keys", "&cYou do not have enough keys to transfer."),
@@ -217,7 +217,6 @@ public enum Messages {
                 return color(message);
             }
         }
-
     }
     
     private boolean exists() {
