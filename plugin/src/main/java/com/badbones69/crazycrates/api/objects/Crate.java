@@ -45,11 +45,8 @@ public class Crate {
     private ArrayList<ItemStack> preview;
     private ArrayList<Tier> tiers;
     private CrateHologram hologram;
-    private FileManager fileManager = FileManager.getInstance();
-    private CrazyManager cc = CrazyManager.getInstance();
     
     /**
-     *
      * @param name The name of the crate.
      * @param crateType The crate type of the crate.
      * @param key The key as an item stack.
@@ -492,6 +489,7 @@ public class Crate {
         ArrayList<ItemStack> items = new ArrayList<>();
         items.add(item);
         String path = "Crate.Prizes." + prize;
+
         if (!file.contains(path)) {
 
             if (item.hasItemMeta()) {
@@ -510,29 +508,26 @@ public class Crate {
             List<String> enchantments = new ArrayList<>();
 
             for (Enchantment enchantment : item.getEnchantments().keySet()) {
-                enchantments.add((cc.useNewMaterial() ? enchantment.getKey().getKey() : enchantment.getName()) + ":" + item.getEnchantments().get(enchantment));
+                enchantments.add((CrazyManager.getInstance().useNewMaterial() ? enchantment.getKey().getKey() : enchantment.getName()) + ":" + item.getEnchantments().get(enchantment));
             }
 
             if (!enchantments.isEmpty()) {
                 file.set(path + ".DisplayEnchantments", enchantments);
             }
 
-            file.set(path + ".DisplayItem", cc.useNewMaterial() ? item.getType().name() : item.getType().name() + ":" + item.getDurability());
+            file.set(path + ".DisplayItem", CrazyManager.getInstance().useNewMaterial() ? item.getType().name() : item.getType().name() + ":" + item.getDurability());
             file.set(path + ".DisplayAmount", item.getAmount());
             file.set(path + ".MaxRange", 100);
             file.set(path + ".Chance", 50);
         } else {
             //Must be checked as getList will return null if nothing is found.
-            if (file.contains(path + ".Editor-Items")) {
-                file.getList(path + ".Editor-Items").forEach(listItem -> items.add((ItemStack) listItem));
-            }
+            if (file.contains(path + ".Editor-Items")) file.getList(path + ".Editor-Items").forEach(listItem -> items.add((ItemStack) listItem));
         }
         file.set(path + ".Editor-Items", items);
-        fileManager.saveFile(fileManager.getFile(name));
+        CrazyManager.getFileManager().saveFile(CrazyManager.getFileManager().getFile(name));
     }
     
     /**
-     *
      * @return The max page for the preview.
      */
     public int getMaxPage() {
@@ -540,7 +535,6 @@ public class Crate {
     }
     
     /**
-     *
      * @return A list of the tiers for the crate. Will be empty if there are none.
      */
     public ArrayList<Tier> getTiers() {
@@ -548,7 +542,6 @@ public class Crate {
     }
     
     /**
-     *
      * @return A CrateHologram which contains all the info about the hologram the crate uses.
      */
     public CrateHologram getHologram() {
