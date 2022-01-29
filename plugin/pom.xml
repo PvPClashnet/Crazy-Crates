@@ -16,19 +16,6 @@
 
     <artifactId>crazycrates-plugin</artifactId>
 
-    <repositories>
-        <repository>
-            <id>papermc</id>
-            <url>https://papermc.io/repo/repository/maven-public/</url>
-        </repository>
-
-        <repository>
-            <id>reposilite-repository-snapshots</id>
-            <name>TriumphTeam Repository</name>
-            <url>https://repo.triumphteam.dev/snapshots</url>
-        </repository>
-    </repositories>
-
     <dependencies>
         <dependency>
             <groupId>com.badbones69</groupId>
@@ -52,11 +39,50 @@
             <scope>compile</scope>
         </dependency>
 
-        <dependency>
+        <!--<dependency>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-resources-plugin</artifactId>
             <version>3.2.0</version>
             <type>maven-plugin</type>
+            <scope>provided</scope>
+        </dependency>-->
+
+        <!-- Placeholder Support -->
+        <dependency>
+            <groupId>me.clip</groupId>
+            <artifactId>placeholderapi</artifactId>
+            <version>2.11.1</version>
+            <scope>provided</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.spigotmc</groupId>
+                    <artifactId>spigot</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <dependency>
+            <groupId>be.maximvdw</groupId>
+            <artifactId>MVdWPlaceholderAPI</artifactId>
+            <version>3.1.1-SNAPSHOT</version>
+            <scope>provided</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.spigotmc</groupId>
+                    <artifactId>spigot</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>be.maximvdw</groupId>
+                    <artifactId>MVdWUpdater</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <!-- Holograms -->
+        <dependency>
+            <groupId>com.gmail.filoghost.holographicdisplays</groupId>
+            <artifactId>holographicdisplays-api</artifactId>
+            <version>2.4.9</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>
@@ -71,7 +97,7 @@
             </resource>
         </resources>
         <plugins>
-            <!-- This disables the filtering in file extensions that can be corrupted by it-->
+            <!-- This disables the filtering in file extensions that can be corrupted by it
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-resources-plugin</artifactId>
@@ -80,7 +106,7 @@
                         <nonFilteredFileExtension>nbt</nonFilteredFileExtension>
                     </nonFilteredFileExtensions>
                 </configuration>
-            </plugin>
+            </plugin>-->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
@@ -96,7 +122,17 @@
                             <shadedPattern>com.badbones69.crazycrates.libs.paperlib</shadedPattern>
                         </relocation>
                     </relocations>
-                    <!--<outputFile>H:\Development\CrazyCrew\..server\spigot\plugins\CrazyCrates[v${project.version}].jar</outputFile>-->
+                    <filters>
+                        <filter>
+                            <artifact>*:*</artifact>
+                            <excludes>
+                                <exclude>META-INF/MANIFEST.MF</exclude>
+                                <exclude>LICENSE</exclude>
+                                <exclude>META-INF/maven/de.tr7zw/functional-annotations/pom.properties</exclude>
+                                <exclude>META-INF/maven/de.tr7zw/functional-annotations/pom.xml</exclude>
+                            </excludes>
+                        </filter>
+                    </filters>
                 </configuration>
                 <executions>
                     <execution>
