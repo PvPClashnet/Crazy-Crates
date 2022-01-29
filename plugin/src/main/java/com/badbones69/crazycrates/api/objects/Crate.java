@@ -25,9 +25,9 @@ import java.util.Random;
 public class Crate {
     
     private CrateManager manager;
-    private String name;
-    private ItemStack key;
-    private ItemStack keyNoNBT;
+    private final String name;
+    private final ItemStack key;
+    private final ItemStack keyNoNBT;
     private ItemStack adminKey;
     private int maxPage = 1;
     private int maxSlots;
