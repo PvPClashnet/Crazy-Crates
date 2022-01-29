@@ -258,13 +258,13 @@ public class ItemBuilder {
      * @return The ItemBuilder with updated info.
      */
     public ItemBuilder setMaterial(String material) {
-        String metaData = "";
+        String metaData;
 
         if (material.contains(":")) {// Sets the durability or another value option.
             String[] b = material.split(":");
             material = b[0];
             metaData = b[1];
-            if (metaData.contains("#")) {// <ID>:<Durability>#<CustomModelData>
+            if (metaData.contains("#")) { // <ID>:<Durability>#<CustomModelData>
                 String modelData = metaData.split("#")[1];
                 if (Methods.isInt(modelData)) {//Value is a number.
                     this.useCustomModelData = true;
