@@ -18,14 +18,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.FireworkMeta;
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.nio.charset.StandardCharsets;
 import java.util.*;
-
 import static com.badbones69.crazycrates.func.ConstantsKt.color;
 
 public class Methods {
@@ -59,8 +53,7 @@ public class Methods {
                     num = 1 + random.nextInt(max);
                     if (num >= 1 && num <= chance) items.put(item, "Crate.Prizes." + reward);
                 }
-            } catch (Exception e) {
-            }
+            } catch (Exception ignored) {}
         }
         return items;
     }
@@ -105,8 +98,7 @@ public class Methods {
             } else {
                 item.setAmount(item.getAmount() - 1);
             }
-        } catch (Exception e) {
-        }
+        } catch (Exception ignored) {}
     }
     
     public static boolean permCheck(CommandSender sender, String perm) {
@@ -231,8 +223,7 @@ public class Methods {
                         stripEnchantmentName(enchantments.get(enchantment.getName())).equalsIgnoreCase(enchantmentName))) {
                     return enchantment;
                 }
-            } catch (Exception ignore) {//If any null enchantments are found they may cause errors.
-            }
+            } catch (Exception ignore) {}
         }
         return null;
     }
