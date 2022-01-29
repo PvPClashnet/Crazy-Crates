@@ -14,7 +14,6 @@ import com.badbones69.crazycrates.func.enums.registerPermissions
 import com.badbones69.crazycrates.func.listeners.BasicListener
 import com.badbones69.crazycrates.func.registerListener
 import com.badbones69.crazycrates.support.libs.Support
-import com.badbones69.crazycrates.support.libs.Version
 import com.badbones69.crazycrates.support.placeholders.MVdWPlaceholderAPISupport
 import com.badbones69.crazycrates.support.placeholders.PlaceholderAPISupport
 import io.papermc.lib.PaperLib
@@ -29,20 +28,6 @@ import java.nio.file.StandardCopyOption
 class CrazyCrates : JavaPlugin() {
 
     private var serverEnabled = true
-
-    override fun onLoad() {
-        if (Version.isOlder(Version.TOO_OLD)) {
-            logger.warning("============= Crazy Crates =============");
-            logger.info(" ")
-            logger.warning("You are running Crazy Crates on a version that is not 1.18.X.")
-            logger.warning("No guarantee that it will run perfectly, You have been warned.")
-            logger.info(" ")
-            logger.warning("Jenkins Page: https://jenkins.badbones69.com/job/Crazy-Crates-Dev/")
-            logger.warning("Version Integer: " + Version.getCurrentVersion().versionInteger)
-            logger.info(" ")
-            logger.warning("============= Crazy Crates =============")
-        }
-    }
 
     override fun onEnable() {
         super.onEnable()
