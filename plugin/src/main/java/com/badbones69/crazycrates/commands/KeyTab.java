@@ -14,8 +14,8 @@ public class KeyTab implements TabCompleter {
     @Override
     public List<String> onTabComplete(CommandSender sender, Command command, String commandLabel, String[] args) {
         List<String> completions = new ArrayList<>();
-        if (args.length == 1) {// /key
-            if (hasPermission(sender, "key")) {
+        if (args.length == 1) { // /key
+            if (hasPermission(sender)) {
                 CrazyManager.getJavaPlugin().getServer().getOnlinePlayers().forEach(player -> completions.add(player.getName()));
             }
             return StringUtil.copyPartialMatches(args[0], completions, new ArrayList<>());

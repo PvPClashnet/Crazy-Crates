@@ -190,7 +190,7 @@ public class QuadCrateSession {
                         spiralLocationsClockwise = getSpiralLocationsClockwise(particleLocation);
                         spiralLocationsCounterClockwise = getSpiralLocationsCounterClockwise(particleLocation);
                     }
-                }//154 - 33
+                }
             }
         }.runTaskTimer(CrazyManager.getJavaPlugin(), 0, 1));
 

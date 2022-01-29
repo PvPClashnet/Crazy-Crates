@@ -266,7 +266,7 @@ public class ItemBuilder {
             metaData = b[1];
             if (metaData.contains("#")) { // <ID>:<Durability>#<CustomModelData>
                 String modelData = metaData.split("#")[1];
-                if (Methods.isInt(modelData)) {//Value is a number.
+                if (Methods.isInt(modelData)) { //Value is a number.
                     this.useCustomModelData = true;
                     this.customModelData = Integer.parseInt(modelData);
                 }

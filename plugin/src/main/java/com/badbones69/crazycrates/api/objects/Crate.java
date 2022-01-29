@@ -336,7 +336,9 @@ public class Crate {
      * @return The preview as an Inventory object.
      */
     public Inventory getPreview(Player player, int page) {
-        Inventory inventory = Bukkit.createInventory(null, !boarderToggle && (Preview.playerInMenu(player) || maxPage > 1) && maxSlots == 9 ? maxSlots + 9 : maxSlots, previewName);
+        Inventory inventory = Bukkit.createInventory(null, !boarderToggle &&
+                (Preview.playerInMenu(player) || maxPage > 1) &&
+                maxSlots == 9 ? maxSlots + 9 : maxSlots, previewName);
         setDefaultItems(inventory, player);
 
         for (ItemStack item : getPageItems(page)) {
