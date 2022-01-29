@@ -1,7 +1,7 @@
 package com.badbones69.crazycrates.support.placeholders;
 
 import com.badbones69.crazycrates.api.CrazyManager;
-import com.badbones69.crazycrates.api.enums.CrateType;
+import com.badbones69.crazycrates.func.enums.CrateType;
 import com.badbones69.crazycrates.api.objects.Crate;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import org.bukkit.OfflinePlayer;

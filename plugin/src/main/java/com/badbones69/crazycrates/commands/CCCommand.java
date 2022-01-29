@@ -2,7 +2,7 @@ package com.badbones69.crazycrates.commands;
 
 import com.badbones69.crazycrates.api.CrazyManager;
 import com.badbones69.crazycrates.api.FileManager;
-import com.badbones69.crazycrates.api.enums.KeyType;
+import com.badbones69.crazycrates.func.enums.KeyType;
 import com.badbones69.crazycrates.api.events.PlayerReceiveKeyEvent;
 import com.badbones69.crazycrates.api.objects.CrateLocation;
 import com.badbones69.crazycrates.api.objects.Prize;
@@ -10,7 +10,7 @@ import com.badbones69.crazycrates.controllers.CrateControl;
 import com.badbones69.crazycrates.controllers.GUIMenu;
 import com.badbones69.crazycrates.controllers.Preview;
 import com.badbones69.crazycrates.Methods;
-import com.badbones69.crazycrates.api.enums.CrateType;
+import com.badbones69.crazycrates.func.enums.CrateType;
 import com.badbones69.crazycrates.api.enums.Messages;
 import com.badbones69.crazycrates.api.objects.Crate;
 import org.bukkit.*;

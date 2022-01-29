@@ -5,7 +5,7 @@ import com.badbones69.crazycrates.api.events.PlayerPrizeEvent;
 import com.badbones69.crazycrates.controllers.CrateControl;
 import de.tr7zw.changeme.nbtapi.NBTItem;
 import com.badbones69.crazycrates.Methods;
-import com.badbones69.crazycrates.api.enums.KeyType;
+import com.badbones69.crazycrates.func.enums.KeyType;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.Prize;
 import org.bukkit.Location;
