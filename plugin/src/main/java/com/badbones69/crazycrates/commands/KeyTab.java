@@ -23,7 +23,7 @@ public class KeyTab implements TabCompleter {
         return new ArrayList<>();
     }
     
-    private boolean hasPermission(CommandSender sender, String node) {
-        return sender.hasPermission("crazycrates." + node) || sender.hasPermission("crazycrates.admin");
+    private boolean hasPermission(CommandSender sender) {
+        return sender.hasPermission("crazycrates." + "key") || sender.hasPermission("crazycrates.admin");
     }
 }
