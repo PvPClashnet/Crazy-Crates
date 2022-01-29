@@ -111,8 +111,6 @@ class CrazyCrates : JavaPlugin() {
         if (Support.PLACEHOLDERAPI.isPluginLoaded) PlaceholderAPISupport().register()
         if (Support.MVDWPLACEHOLDERAPI.isPluginLoaded) MVdWPlaceholderAPISupport.registerPlaceholders()
 
-        Metrics()
-
         registerPermissions(server.pluginManager)
 
         getCommand("key")?.setExecutor(KeyCommand());
