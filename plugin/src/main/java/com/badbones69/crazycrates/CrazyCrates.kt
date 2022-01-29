@@ -113,8 +113,6 @@ class CrazyCrates : JavaPlugin() {
 
         Metrics()
 
-        Methods.hasUpdate()
-
         registerPermissions(server.pluginManager)
 
         getCommand("key")?.setExecutor(KeyCommand());

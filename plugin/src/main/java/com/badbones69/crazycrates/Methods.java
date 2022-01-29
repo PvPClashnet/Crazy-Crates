@@ -215,34 +215,6 @@ public class Methods {
         }
     }
     
-    public static void hasUpdate() {
-        try {
-            HttpURLConnection c = (HttpURLConnection) new URL("http://www.spigotmc.org/api/general.php").openConnection();
-            c.setDoOutput(true);
-            c.setRequestMethod("POST");
-            c.getOutputStream().write(("key=98BE0FE67F88AB82B4C197FAF1DC3B69206EFDCC4D3B80FC83A00037510B99B4&resource=17599").getBytes(StandardCharsets.UTF_8));
-            String oldVersion = CrazyManager.getJavaPlugin().getDescription().getVersion();
-            String newVersion = new BufferedReader(new InputStreamReader(c.getInputStream())).readLine().replaceAll("[a-zA-Z ]", "");
-            if (!newVersion.equals(oldVersion)) {
-                Bukkit.getConsoleSender().sendMessage(getPrefix() + color("&cYour server is running &7v" + oldVersion + "&c and the newest is &7v" + newVersion + "&c."));
-            }
-        } catch (Exception ignored) {}
-    }
-    
-    public static void hasUpdate(Player player) {
-        try {
-            HttpURLConnection c = (HttpURLConnection) new URL("http://www.spigotmc.org/api/general.php").openConnection();
-            c.setDoOutput(true);
-            c.setRequestMethod("POST");
-            c.getOutputStream().write(("key=98BE0FE67F88AB82B4C197FAF1DC3B69206EFDCC4D3B80FC83A00037510B99B4&resource=17599").getBytes(StandardCharsets.UTF_8));
-            String oldVersion = CrazyManager.getJavaPlugin().getDescription().getVersion();
-            String newVersion = new BufferedReader(new InputStreamReader(c.getInputStream())).readLine().replaceAll("[a-zA-Z ]", "");
-            if (!newVersion.equals(oldVersion)) {
-                player.sendMessage(getPrefix() + color("&cYour server is running &7v" + oldVersion + "&c and the newest is &7v" + newVersion + "&c."));
-            }
-        } catch (Exception ignored) {}
-    }
-    
     public static Set<String> getEnchantments() {
         return getEnchantmentList().keySet();
     }
