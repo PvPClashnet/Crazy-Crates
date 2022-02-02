@@ -55,7 +55,7 @@ public class Tier {
     }
     
     /**
-     * @return The range of max possible\ chances.
+     * @return The range of max possible chances.
      */
     public Integer getMaxRange() {
         return maxRange;

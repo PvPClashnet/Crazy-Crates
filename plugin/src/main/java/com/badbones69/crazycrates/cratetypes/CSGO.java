@@ -21,6 +21,7 @@ public class CSGO implements Listener {
     
     private static void setGlass(Inventory inv) {
         HashMap<Integer, ItemStack> glass = new HashMap<>();
+
         for (int i = 0; i < 10; i++) {
             if (i < 9 && i != 3) {
                 glass.put(i, inv.getItem(i));
@@ -65,9 +66,11 @@ public class CSGO implements Listener {
     public static void openCSGO(Player player, Crate crate, KeyType keyType, boolean checkHand) {
         Inventory inv = CrazyManager.getJavaPlugin().getServer().createInventory(null, 27, Methods.sanitizeColor(crate.getFile().getString("Crate.CrateName")));
         setGlass(inv);
+
         for (int i = 9; i > 8 && i < 18; i++) {
             inv.setItem(i, crate.pickPrize(player).getDisplayItem());
         }
+
         player.openInventory(inv);
         if (CrazyManager.getInstance().takeKeys(1, player, crate, keyType, checkHand)) {
             startCSGO(player, inv, crate);
@@ -85,17 +88,22 @@ public class CSGO implements Listener {
             
             @Override
             public void run() {
+
                 if (full <= 50) {//When Spinning
                     moveItems(inv, player, crate);
                     setGlass(inv);
                     player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 1, 1);
                 }
+
                 open++;
+
                 if (open >= 5) {
                     player.openInventory(inv);
                     open = 0;
                 }
+
                 full++;
+
                 if (full > 51) {
                     if (slowSpin().contains(time)) {//When Slowing Down
                         moveItems(inv, player, crate);
@@ -119,10 +127,11 @@ public class CSGO implements Listener {
                         CrazyManager.getInstance().removePlayerFromOpeningList(player);
                         cancel();
                         if (player.getOpenInventory().getTopInventory() == inv) player.closeInventory();
-                    } else if (time > 60) {//Added this due reports of the prizes spamming when low tps.
+                    } else if (time > 60) { //Added this due reports of the prizes spamming when low tps.
                         cancel();
                     }
                 }
+
             }
         }.runTaskTimer(CrazyManager.getJavaPlugin(), 1, 1));
     }
@@ -143,9 +152,11 @@ public class CSGO implements Listener {
     
     private static void moveItems(Inventory inv, Player player, Crate crate) {
         ArrayList<ItemStack> items = new ArrayList<>();
+
         for (int i = 9; i > 8 && i < 17; i++) {
             items.add(inv.getItem(i));
         }
+
         inv.setItem(9, crate.pickPrize(player).getDisplayItem());
         for (int i = 0; i < 8; i++) {
             inv.setItem(i + 10, items.get(i));

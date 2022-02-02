@@ -687,7 +687,7 @@ public class CrazyManager {
     }
     
     /**
-     * The time in seconds a quadcrate will last before kicking the player.
+     * The time in seconds a quad-crate will last before kicking the player.
      * @return The time in seconds till kick.
      */
     public Integer getQuadCrateTimer() {
@@ -761,7 +761,6 @@ public class CrazyManager {
                 } else {
                     player.getWorld().dropItemNaturally(player.getLocation(), clone.build());
                 }
-
             }
 
             for (String command : prize.getCommands()) {// /give %player% iron %random%:1-64
@@ -857,7 +856,7 @@ public class CrazyManager {
     }
     
     /**
-     * Load the offline keys of a player who has came online.
+     * Load the offline keys of a player who has come online.
      * @param player The player which you would like to load the offline keys for.
      */
     public void loadOfflinePlayersKeys(Player player) {
@@ -1173,16 +1172,13 @@ public class CrazyManager {
                             }
                         }
                     }
-
                 } catch (Exception e) {
                     Methods.failedToTakeKey(player, crate, e);
                     return false;
                 }
-                //Returns true because it was able to take some keys.
 
-                if (takeAmount < amount) {
-                    return true;
-                }
+                //Returns true because it was able to take some keys.
+                if (takeAmount < amount) return true;
 
                 break;
             case VIRTUAL_KEY:
@@ -1199,7 +1195,7 @@ public class CrazyManager {
 
                 Files.DATA.saveFile();
                 return true;
-            case FREE_KEY://Returns true because it's FREE
+            case FREE_KEY: //Returns true because it's FREE
                 return true;
         }
         return false;
@@ -1377,7 +1373,6 @@ public class CrazyManager {
         } catch (Exception e) {
             return new ItemBuilder().setMaterial(Material.RED_TERRACOTTA).setName("&c&lERROR").setLore(Arrays.asList("&cThere is an error", "&cFor the reward: &c" + prize));
         }
-
     }
     
     private List<ItemBuilder> getItems(FileConfiguration file, String prize) {
