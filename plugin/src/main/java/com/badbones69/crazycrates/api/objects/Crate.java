@@ -153,21 +153,7 @@ public class Crate {
             }
         }
 
-        // ================= Chance Check ================= //
-
-        for (int stop = 0; prizes.size() == 0 && stop <= 2000; stop++) {
-            for (Prize prize : usablePrizes) {
-                int max = prize.getMaxRange();
-                int chance = prize.getChance();
-                int num;
-                for (int counter = 1; counter <= 1; counter++) {
-                    num = 1 + new Random().nextInt(max);
-                    if (num >= 1 && num <= chance) {
-                        prizes.add(prize);
-                    }
-                }
-            }
-        }
+        chanceCheck(prizes, usablePrizes);
 
         try {
             return prizes.get(new Random().nextInt(prizes.size()));
@@ -185,13 +171,13 @@ public class Crate {
      */
     public Prize pickPrize(Player player, Tier tier) {
         ArrayList<Prize> prizes = new ArrayList<>();
-        ArrayList<Prize> useablePrizes = new ArrayList<>();
+        ArrayList<Prize> usablePrizes = new ArrayList<>();
         // ================= Blacklist Check ================= //
 
         if (player.isOp()) {
             for (Prize prize : getPrizes()) {
                 if (prize.getTiers().contains(tier)) {
-                    useablePrizes.add(prize);
+                    usablePrizes.add(prize);
                 }
             }
         } else {
@@ -204,29 +190,28 @@ public class Crate {
                 }
 
                 if (prize.getTiers().contains(tier)) {
-                    useablePrizes.add(prize);
+                    usablePrizes.add(prize);
                 }
             }
         }
 
-        // ================= Chance Check ================= //
-        for (int stop = 0; prizes.size() == 0 && stop <= 2000; stop++) {
-            for (Prize prize : useablePrizes) {
-                int max = prize.getMaxRange();
-                int chance = prize.getChance();
-                int num;
-                for (int counter = 1; counter <= 1; counter++) {
-                    num = 1 + new Random().nextInt(max);
-                    if (num >= 1 && num <= chance) {
-                        prizes.add(prize);
-                    }
-                }
+        chanceCheck(prizes, usablePrizes);
 
-            }
-        }
         return prizes.get(new Random().nextInt(prizes.size()));
     }
-    
+
+    private void chanceCheck(ArrayList<Prize> prizes, ArrayList<Prize> usablePrizes) {
+        for (int stop = 0; prizes.size() == 0 && stop <= 2000; stop++) {
+            for (Prize prize : usablePrizes) {
+                int max = prize.getMaxRange();
+                int chance = prize.getChance();
+                for (int counter = 1; counter <= 1; counter++) {
+                    if (1 + new Random().nextInt(max) <= chance) prizes.add(prize);
+                }
+            }
+        }
+    }
+
     /**
      * Picks a random prize based on BlackList Permissions and the Chance System. Spawns the display item at the location.
      * @param player The player that will be winning the prize.
