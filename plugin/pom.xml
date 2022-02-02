@@ -8,12 +8,6 @@
         <version>1.10.3</version>
     </parent>
 
-    <properties>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <java.version>17</java.version>
-        <java.release>17</java.release>
-    </properties>
-
     <artifactId>crazycrates-plugin</artifactId>
 
     <dependencies>
@@ -38,14 +32,6 @@
             <version>1.0.7</version>
             <scope>compile</scope>
         </dependency>
-
-        <!--<dependency>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-resources-plugin</artifactId>
-            <version>3.2.0</version>
-            <type>maven-plugin</type>
-            <scope>provided</scope>
-        </dependency>-->
 
         <!-- Placeholder Support -->
         <dependency>
@@ -86,13 +72,13 @@
             <scope>provided</scope>
         </dependency>
 
-        <!-- Triumph's Framework -->
+        <!-- Triumph's Framework
         <dependency>
             <groupId>dev.triumphteam</groupId>
             <artifactId>triumph-gui</artifactId>
             <version>3.1.1</version>
             <scope>compile</scope>
-        </dependency>
+        </dependency>-->
     </dependencies>
 
     <build>
@@ -105,16 +91,6 @@
             </resource>
         </resources>
         <plugins>
-            <!-- This disables the filtering in file extensions that can be corrupted by it
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-resources-plugin</artifactId>
-                <configuration>
-                    <nonFilteredFileExtensions>
-                        <nonFilteredFileExtension>nbt</nonFilteredFileExtension>
-                    </nonFilteredFileExtensions>
-                </configuration>
-            </plugin>-->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
@@ -128,10 +104,6 @@
                         <relocation>
                             <pattern>io.papermc</pattern>
                             <shadedPattern>com.badbones69.crazycrates.libs.paperlib</shadedPattern>
-                        </relocation>
-                        <relocation>
-                            <pattern>dev.triumphteam.gui</pattern>
-                            <shadedPattern>com.badbones69.crazycrates.libs.triumphteam.gui</shadedPattern>
                         </relocation>
                     </relocations>
                     <filters>
@@ -154,13 +126,6 @@
                         </goals>
                     </execution>
                 </executions>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <configuration>
-                    <release>17</release>
-                </configuration>
             </plugin>
             <plugin>
                 <groupId>org.jetbrains.kotlin</groupId>
