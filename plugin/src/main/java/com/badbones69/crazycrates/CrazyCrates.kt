@@ -7,8 +7,7 @@ import com.badbones69.crazycrates.api.enums.Messages
 import com.badbones69.crazycrates.api.objects.QuadCrateSession
 import com.badbones69.crazycrates.commands.CCCommand
 import com.badbones69.crazycrates.commands.CCTab
-import com.badbones69.crazycrates.commands.KeyCommand
-import com.badbones69.crazycrates.commands.KeyTab
+import com.badbones69.crazycrates.commands.v2.KeyCommand
 import com.badbones69.crazycrates.controllers.*
 import com.badbones69.crazycrates.cratetypes.*
 import com.badbones69.crazycrates.func.listeners.BasicListener
@@ -17,8 +16,10 @@ import com.badbones69.crazycrates.support.libs.Support
 import com.badbones69.crazycrates.support.libs.Version
 import com.badbones69.crazycrates.support.placeholders.MVdWPlaceholderAPISupport
 import com.badbones69.crazycrates.support.placeholders.PlaceholderAPISupport
+import dev.triumphteam.cmd.bukkit.BukkitCommandManager
 import io.papermc.lib.PaperLib
 import org.bstats.bukkit.Metrics
+import org.bukkit.command.CommandSender
 import org.bukkit.event.EventHandler
 import org.bukkit.event.player.PlayerJoinEvent
 import org.bukkit.plugin.java.JavaPlugin
@@ -26,6 +27,8 @@ import org.bukkit.plugin.java.JavaPlugin
 class CrazyCrates : JavaPlugin() {
 
     private val plugin = this // Avoid using "this"
+
+    val manager: BukkitCommandManager<CommandSender> = BukkitCommandManager.create(plugin)
 
     override fun onLoad() {
         if (Version.isOlder(Version.TOO_OLD)) {
@@ -96,10 +99,10 @@ class CrazyCrates : JavaPlugin() {
 
         Methods.hasUpdate()
 
-        getCommand("key")?.setExecutor(KeyCommand())
-        getCommand("key")?.tabCompleter = KeyTab()
         getCommand("crazycrates")?.setExecutor(CCCommand())
         getCommand("crazycrates")?.tabCompleter = CCTab()
+
+        manager.registerCommand(KeyCommand())
     }
 
     override fun onDisable() {

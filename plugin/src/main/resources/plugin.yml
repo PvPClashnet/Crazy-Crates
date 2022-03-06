@@ -9,8 +9,5 @@ commands:
   crazycrates:
     description: Opens the GUI.
     aliases: [cc, ccrate, crazycrate, crate, crates]
-  key:
-    description: Views the amount of keys you/others have.
-    aliases: [keys]
 libraries:
   - org.jetbrains.kotlin:kotlin-stdlib:1.6.10
