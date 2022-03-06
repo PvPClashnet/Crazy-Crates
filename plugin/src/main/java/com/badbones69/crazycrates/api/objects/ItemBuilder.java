@@ -780,8 +780,7 @@ public class ItemBuilder {
                 if (itemFlag != null) {
                     addItemFlag(itemFlag);
                 }
-            } catch (Exception e) {
-            }
+            } catch (Exception ignored) {}
         }
         return this;
     }
