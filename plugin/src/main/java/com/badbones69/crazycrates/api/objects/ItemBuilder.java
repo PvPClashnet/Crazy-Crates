@@ -35,6 +35,8 @@ import static com.badbones69.crazycrates.func.ConstantsKt.color;
  * @author BadBones69
  *
  */
+
+@Deprecated
 public class ItemBuilder {
     
     private NBTItem nbtItem;
