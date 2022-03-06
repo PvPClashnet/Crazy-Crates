@@ -6,6 +6,8 @@ repositories {
 
     maven("https://hub.spigotmc.org/nexus/content/repositories/snapshots/")
 
+    maven("https://repo.triumphteam.dev/snapshots/")
+
     maven {
         url = uri("https://repo.codemc.org/repository/maven-public/")
         content {
@@ -64,6 +66,8 @@ dependencies {
     implementation("io.papermc:paperlib:1.0.7")
 
     implementation("org.bstats:bstats-bukkit:3.0.0")
+
+    implementation("dev.triumphteam:triumph-cmd-bukkit:2.0.0-SNAPSHOT")
 
     // Api Module
     implementation(project(":api"))
