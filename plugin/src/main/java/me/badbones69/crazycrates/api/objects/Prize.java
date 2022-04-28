@@ -74,7 +74,7 @@ public class Prize {
      * @param altPrize The alternative prize that is won if the player has a blacklist permission.
      */
     public Prize(String name, ItemBuilder displayItem, String bulkRewardMessage, List<String> messages, List<String> commands,
-                 List<String> bulkCommands, List<ItemStack> items, List<ItemBuilder> itemBuilders, String crate, int chance, int maxRange, boolean firework, List<String> blackListPermissions,
+             List<String> bulkCommands, List<ItemStack> items, List<ItemBuilder> itemBuilders, String crate, int chance, int maxRange, boolean firework, List<String> blackListPermissions,
                  List<Tier> tiers, Prize altPrize) {
         this.name = name != null ? name : "&4No name Found!";
         this.crate = crate;

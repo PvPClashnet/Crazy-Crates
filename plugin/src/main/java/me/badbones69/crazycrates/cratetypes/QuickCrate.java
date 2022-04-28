@@ -87,7 +87,6 @@ public class QuickCrate implements Listener {
                             return;
                         }
 
-
                         player.sendMessage(ChatColor.translateAlternateColorCodes('&',
                                 bulkRewardMessage.replace("%amount%", Integer.toString(prizeList.size()))));
                     });
