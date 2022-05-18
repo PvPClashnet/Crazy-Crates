@@ -429,7 +429,7 @@ public class CrazyCrates {
             public void run() {
                 cooldowns.remove(player.getUniqueId());
             }
-        }.runTaskLater(plugin, Files.CONFIG.getFile().getInt("Settings.Cooldown", 3) * 20L);
+        }.runTaskLater(plugin, Files.CONFIG.getFile().getInt("Settings.Cooldown", 1) * 10L);
 
         switch (crate.getCrateType()) {
             case MENU:
