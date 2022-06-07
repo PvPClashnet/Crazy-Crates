@@ -38,12 +38,12 @@ public class MassKeyGUIListenerHandler implements Listener {
 		session.removeOneKey();
 
 		if (session.isEmpty()) {
-			if (player.hasMetadata(MassKeyGUI.METADATA_KEY)) {
-				player.closeInventory();
-				massKeyService.finishSession(player);
-				plugin.removePlayerFromOpeningList(player);
-			} else {
+			if (!player.hasMetadata(MassKeyGUI.METADATA_KEY)) {
 				massKeyGUI.open(player, crate);
+			} else {
+				plugin.removePlayerFromOpeningList(player);
+				massKeyService.finishSession(player);
+				player.closeInventory();
 			}
 
 			return;

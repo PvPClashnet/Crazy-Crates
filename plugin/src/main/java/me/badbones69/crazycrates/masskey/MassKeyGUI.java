@@ -40,8 +40,8 @@ public class MassKeyGUI {
 		provideMassKeys(player, crate)
 				.forEach(itemBuilder -> setItem(inventory, itemBuilder));
 
-		massKeyService.openInventory(player);
 		player.openInventory(inventory);
+		massKeyService.openInventory(player);
 	}
 
 	protected void setItem(Inventory inventory, ItemBuilder builder) {
