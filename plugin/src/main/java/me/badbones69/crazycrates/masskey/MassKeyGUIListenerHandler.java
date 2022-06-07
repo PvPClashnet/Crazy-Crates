@@ -90,12 +90,12 @@ public class MassKeyGUIListenerHandler implements Listener {
 		}
 
 		handleToggle(player, slot, inventory);
-		handleMassKey(player, clicked);
+		handleMassKey(player, clicked, slot);
 	}
 
-	private void handleMassKey(Player player, ItemStack clicked) {
+	private void handleMassKey(Player player, ItemStack clicked, int slot) {
 		ConfigurationSection key = massKeyGUI.getSettings().getConfigurationSection("mass-keys." + clicked.getAmount());
-		if (key == null) {
+		if (key == null || key.getInt("slot") != slot) {
 			return;
 		}
 		MassKeySession session = massKeyService.sessionOf(player);
