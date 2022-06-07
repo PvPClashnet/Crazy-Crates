@@ -1,4 +1,37 @@
 #List of all the enchantments: https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/enchantments/Enchantment.html
+mass-key-gui:
+  title: "&7&lMASS OPEN KEYS"
+  rows: 3
+  mass-key-template:
+    available-material: "GLOWSTONE_DUST"
+    unavailable-material: "REDSTONE"
+    display: "&aOPEN %amount% KEY(s)"
+    lore: []
+  mass-keys:
+    1:
+      slot: 12
+      amount: 1
+    10:
+      slot: 13
+      amount: 10
+    64:
+      slot: 14
+      amount: 64
+  information:
+    slot: 4
+    material: SIGN
+    display: "&6MASS OPEN INFORMATION"
+    lore:
+      - "&7Click how many keys you want"
+      - "&7to open at once!"
+  toggle-close:
+    slot: 22
+    enabled-material: "REDSTONE_BLOCK"
+    disabled-material: "COAL_BLOCK"
+    display: "&eTOGGLE AUTOCLOSE"
+    lore:
+      - "&7Should we close this menu once you open your key"
+
 Settings:
   Prefix: '&8[&bCrazyCrates&8]: '
   InventoryName: '&b&lCrazy &4&lCrates'

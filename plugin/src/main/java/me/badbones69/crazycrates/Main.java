@@ -10,6 +10,7 @@ import me.badbones69.crazycrates.commands.KeyCommand;
 import me.badbones69.crazycrates.commands.KeyTab;
 import me.badbones69.crazycrates.controllers.*;
 import me.badbones69.crazycrates.cratetypes.*;
+import me.badbones69.crazycrates.masskey.MassKeyGUIListenerHandler;
 import me.badbones69.crazycrates.multisupport.*;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -78,6 +79,7 @@ public class Main extends JavaPlugin implements Listener {
         pm.registerEvents(new Roulette(), this);
         pm.registerEvents(new QuickCrate(), this);
         pm.registerEvents(new CrateControl(), this);
+        pm.registerEvents(new MassKeyGUIListenerHandler(cc.getMassKeyService(), cc.getMassKeyGUI()), this);
         pm.registerEvents(new CrateOnTheGo(), this);
         if (Version.isNewer(Version.v1_11_R1)) {
             pm.registerEvents(new Events_v1_12_R1_Up(), this);

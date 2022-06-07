@@ -15,6 +15,8 @@ import me.badbones69.crazycrates.controllers.CrateControl;
 import me.badbones69.crazycrates.controllers.GUIMenu;
 import me.badbones69.crazycrates.controllers.Preview;
 import me.badbones69.crazycrates.cratetypes.*;
+import me.badbones69.crazycrates.masskey.MassKeyGUI;
+import me.badbones69.crazycrates.masskey.MassKeyService;
 import me.badbones69.crazycrates.multisupport.*;
 import me.badbones69.crazycrates.multisupport.nms.NMSSupport;
 import me.badbones69.crazycrates.multisupport.nms.v1_10_R1.NMS_v1_10_R1;
@@ -139,7 +141,12 @@ public class CrazyCrates {
      * The CrazyCrates plugin.
      */
     private Plugin plugin;
-    
+
+    public CrazyCrates() {
+        this.massKeyService = new MassKeyService();
+        this.massKeyGUI = new MassKeyGUI(massKeyService);
+    }
+
     /**
      * Gets the instance of the CrazyCrates class.
      * @return Instance of this class.
@@ -155,7 +162,18 @@ public class CrazyCrates {
     public static FileManager getFileManager() {
         return fileManager;
     }
-    
+
+    private final MassKeyService massKeyService;
+    private final MassKeyGUI massKeyGUI;
+
+    public MassKeyGUI getMassKeyGUI() {
+        return massKeyGUI;
+    }
+
+    public MassKeyService getMassKeyService() {
+        return massKeyService;
+    }
+
     /**
      * Loads all the information the plugin needs to run.
      */
@@ -409,15 +427,10 @@ public class CrazyCrates {
                 return;
             }
         }
-        addPlayerToOpeningList(player, crate);
-        boolean broadcast = crate.getFile() != null && crate.getFile().getBoolean("Crate.OpeningBroadCast");
-        if (broadcast && crate.getCrateType() != CrateType.QUAD_CRATE) {
-            if (crate.getFile().contains("Crate.BroadCast")) {
-                if (!crate.getFile().getString("Crate.BroadCast").isEmpty()) {
-                    Bukkit.broadcastMessage(Methods.color(crate.getFile().getString("Crate.BroadCast").replaceAll("%Prefix%", Methods.getPrefix()).replaceAll("%prefix%", Methods.getPrefix()).replaceAll("%Player%", player.getName()).replaceAll("%player%", player.getName())));
-                }
-            }
-            broadcast = false;
+
+        if (crate.getCrateType() == CrateType.MENU) {
+            GUIMenu.openGUI(player);
+            return;
         }
 
         //Set player cooldown for 5 ticks
@@ -429,10 +442,23 @@ public class CrazyCrates {
             }
         }.runTaskLater(plugin, Files.CONFIG.getFile().getInt("Settings.Cooldown", 3) * 20L);
 
+        massKeyService.createSession(player, crate, keyType, location, virtualCrate, checkHand);
+        massKeyGUI.open(player, crate);
+    }
+
+    public void openMassedCrate(Player player, Crate crate, KeyType keyType, Location location, boolean virtualCrate, boolean checkHand) {
+        addPlayerToOpeningList(player, crate);
+        boolean broadcast = crate.getFile() != null && crate.getFile().getBoolean("Crate.OpeningBroadCast");
+        if (broadcast && crate.getCrateType() != CrateType.QUAD_CRATE) {
+            if (crate.getFile().contains("Crate.BroadCast")) {
+                if (!crate.getFile().getString("Crate.BroadCast").isEmpty()) {
+                    Bukkit.broadcastMessage(Methods.color(crate.getFile().getString("Crate.BroadCast").replaceAll("%Prefix%", Methods.getPrefix()).replaceAll("%prefix%", Methods.getPrefix()).replaceAll("%Player%", player.getName()).replaceAll("%player%", player.getName())));
+                }
+            }
+            broadcast = false;
+        }
+
         switch (crate.getCrateType()) {
-            case MENU:
-                GUIMenu.openGUI(player);
-                break;
             case COSMIC:
                 Cosmic.openCosmic(player, crate, keyType, checkHand);
                 break;

@@ -12,6 +12,7 @@ import org.bukkit.Material;
 import org.bukkit.block.Banner;
 import org.bukkit.block.banner.Pattern;
 import org.bukkit.block.banner.PatternType;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.EntityType;
 import org.bukkit.inventory.ItemFlag;
@@ -43,6 +44,7 @@ public class ItemBuilder {
     private static final Version version = Version.getCurrentVersion();
     private NBTItem nbtItem;
     private Material material;
+    private int slot;
     private int damage;
     private String name;
     private final List<String> lore;
@@ -143,7 +145,15 @@ public class ItemBuilder {
         this.lorePlaceholders = new HashMap<>(itemBuilder.lorePlaceholders);
         this.itemFlags = new ArrayList<>(itemBuilder.itemFlags);
     }
-    
+
+    public static ItemBuilder fromConfiguration(ConfigurationSection section) {
+        return new ItemBuilder()
+            .setMaterial(section.getString("material", "STONE"))
+            .setName(section.getString("display"))
+            .setLore(section.getStringList("lore"))
+            .setSlot(section.getInt("slot", 0));
+    }
+
     /**
      * Convert an ItemStack to an ItemBuilder to allow easier editing of the ItemStack.
      * @param item The ItemStack you wish to convert into an ItemBuilder.
@@ -408,7 +418,16 @@ public class ItemBuilder {
         this.namePlaceholders = placeholders;
         return this;
     }
-    
+
+    public int getSlot() {
+        return slot;
+    }
+
+    public ItemBuilder setSlot(int slot) {
+        this.slot = slot;
+        return this;
+    }
+
     /**
      * Add a placeholder to the name of the item.
      * @param placeholder The placeholder that will be replaced.

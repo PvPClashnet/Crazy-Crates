@@ -189,7 +189,6 @@ public class CrateControl implements Listener { //Crate Control
                             }
                         }
 
-                        cc.addPlayerToOpeningList(player, crate);
                         cc.openCrate(player, crate, keyType, crateLocation.getLocation(), false, true);
                     } else {
                         if (crate.getCrateType() != CrateType.CRATE_ON_THE_GO) {
