@@ -113,11 +113,7 @@ public class QuickCrate implements Listener {
             }
 
             if (!cc.takeKeys(keysUsed, player, crate, keyType, false)) {
-                if (keyType != KeyType.VIRTUAL_KEY) {
-                    // there seem to be an issue here with virtual keys, they are removed correctly and give prizes accordingly but report an error
-                    // in any case, I don't see the point of this if the player has already received the prize and the key count was decreased properly
-                    Methods.failedToTakeKey(player, crate);
-                }
+                Methods.failedToTakeKey(player, crate);
                 CrateControl.inUse.remove(player);
                 cc.removePlayerFromOpeningList(player);
                 return;

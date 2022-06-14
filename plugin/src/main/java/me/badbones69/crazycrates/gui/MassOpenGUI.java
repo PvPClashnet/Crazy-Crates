@@ -58,7 +58,9 @@ public class MassOpenGUI implements Listener {
             }
 
             final int physicalKeyCount = Math.min(cc.getPhysicalKeys(player, instance.crate), openCount);
-            QuickCrate.openCrate(player, instance.crateLocation.getLocation(), instance.crate, KeyType.PHYSICAL_KEY, physicalKeyCount);
+            if (physicalKeyCount > 0) {
+                QuickCrate.openCrate(player, instance.crateLocation.getLocation(), instance.crate, KeyType.PHYSICAL_KEY, physicalKeyCount);
+            }
             if (openCount > physicalKeyCount) {
                 final int remainingKeyCount = Math.min(cc.getVirtualKeys(player, instance.crate), openCount - physicalKeyCount);
                 QuickCrate.openCrate(player, instance.crateLocation.getLocation(), instance.crate, KeyType.VIRTUAL_KEY, remainingKeyCount);
