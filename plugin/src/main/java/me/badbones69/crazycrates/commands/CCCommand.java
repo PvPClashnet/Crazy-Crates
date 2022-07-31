@@ -629,7 +629,7 @@ public class CCCommand implements CommandExecutor {
                             placeholders.put("%Key%", crate.getKey().getItemMeta().getDisplayName());
                             placeholders.put("%create%", crate.getName());
                             // check if sender is console sender
-                            if (sender instanceof ConsoleCommandSender) {
+                            if (sender instanceof ConsoleCommandSender && Files.CONFIG.getFile().contains("crates-send-console-log")) {
                                 if (Files.CONFIG.getFile().getStringList("crates-send-console-log").contains(
                                     crate.getName()
                                 )) {
