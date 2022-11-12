@@ -92,7 +92,7 @@ public class QuickCrate implements Listener {
 
             int finalKeysUsed = keysUsed;
 
-            Bukkit.getScheduler().runTaskLaterAsynchronously(CrazyCrates.getInstance().getPlugin(), () -> {
+            Bukkit.getScheduler().runTaskLater(CrazyCrates.getInstance().getPlugin(), () -> {
                 boolean rewards = false;
 
                 List<String> messages = FileManager.Files.MESSAGES.getFile().getStringList("Messages.Crate-Open-Bulk");
