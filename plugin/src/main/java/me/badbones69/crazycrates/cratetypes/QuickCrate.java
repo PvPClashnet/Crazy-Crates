@@ -124,7 +124,7 @@ public class QuickCrate implements Listener {
                 if (!rewards) {
                     prizes.forEach(prize -> cc.givePrize(player, prize, true));
                 }
-            }, FileManager.Files.CONFIG.getFile().getInt("Settings.BulkMessageDelay") * 20L);
+            }, FileManager.Files.CONFIG.getFile().getInt("Settings.BulkMessageDelay") * 8L);
 
             if (!cc.takeKeys(keysUsed, player, crate, keyType, false)) {
                 Methods.failedToTakeKey(player, crate);
