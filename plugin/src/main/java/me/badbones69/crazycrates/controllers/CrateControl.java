@@ -153,10 +153,10 @@ public class CrateControl implements Listener { //Crate Control
                                 player.sendMessage(Messages.ALREADY_OPENING_CRATE.getMessage("%Key%", keyName));
                                 return;
                             }
-                            if (inUse.containsValue(crateLocation.getLocation())) {
-                                player.sendMessage(Messages.QUICK_CRATE_IN_USE.getMessage());
-                                return;
-                            }
+//                            if (inUse.containsValue(crateLocation.getLocation())) {
+//                                player.sendMessage(Messages.QUICK_CRATE_IN_USE.getMessage());
+//                                return;
+//                            }
                         }
                         if (Methods.isInventoryFull(player)) {
                             player.sendMessage(Messages.INVENTORY_FULL.getMessage());

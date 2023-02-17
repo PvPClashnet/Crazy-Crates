@@ -476,11 +476,11 @@ public class CrazyCrates {
                 }
                 break;
             case QUICK_CRATE:
-                if (CrateControl.inUse.containsValue(location)) {
-                    player.sendMessage(Messages.QUICK_CRATE_IN_USE.getMessage());
-                    removePlayerFromOpeningList(player);
-                    return;
-                } else {
+//                if (CrateControl.inUse.containsValue(location)) {
+//                    player.sendMessage(Messages.QUICK_CRATE_IN_USE.getMessage());
+//                    removePlayerFromOpeningList(player);
+//                    return;
+//                } else {
                     if (virtualCrate && location.equals(player.getLocation())) {
                         player.sendMessage(Messages.CANT_BE_A_VIRTUAL_CRATE.getMessage());
                         removePlayerFromOpeningList(player);
@@ -489,7 +489,7 @@ public class CrazyCrates {
                         CrateControl.inUse.put(player, location);
                         QuickCrate.openCrate(player, location, crate, keyType, player.isSneaking());
                     }
-                }
+//                }
                 break;
             case CRATE_ON_THE_GO:
                 if (virtualCrate) {
