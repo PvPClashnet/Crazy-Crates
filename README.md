@@ -12,7 +12,7 @@ Source Code for Crazy Crates
 ## Jenkins:
 
 https://jenkins.badbones69.com/job/Crazy-Crates/
-
+ 
 ## Bulk Messages
 
 You can add special commands and messages for all crates, so when someone tries to open multiple at the same time, they
