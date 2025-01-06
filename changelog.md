@@ -1,0 +1,5 @@
+- `Flags` has been removed from being a configuration option for Prizes
+  - If you used `Flags`, as long as it's not empty. It will simply hide everything, but lore/displayname.
+- `HideItemFlags: true/false` will now function, it will hide all, but lore/displayname.
+- `hide-tool-tip:true/false` is now an option for the `Items` section in Prizes.
+- Updated to 1.21.4
